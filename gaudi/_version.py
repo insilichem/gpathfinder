@@ -41,7 +41,7 @@ def get_config():
     cfg.VCS = "git"
     cfg.style = "pep440"
     cfg.tag_prefix = "v"
-    cfg.parentdir_prefix = "gaudi-"
+    cfg.parentdir_prefix = "gpathfinder-"
     cfg.versionfile_source = "gaudi/_version.py"
     cfg.verbose = False
     return cfg
