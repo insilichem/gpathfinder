@@ -1,0 +1,58 @@
+# Requires additional channels:
+#   conda build --python=2.7 -c insilichem -c bioconda -c conda-forge -c omnia -c "$CONDA_PREFIX/conda-bld/" .
+
+package:
+  name: gpathfinder
+  version: {{ environ.get('GIT_DESCRIBE_TAG', 'v')[1:] }}
+
+about:
+  home: https://github.com/insilichem/gaudi/tree/gpathfinder
+  license: Apache
+  license_file: LICENSE
+  summary: identification of ligand binding pathways by a multi-objective gentic algorithm
+
+source:
+  path: ../
+
+build:
+  script: "{{ PYTHON }} -m pip install . --no-deps -vv"
+  number: 0
+
+requirements:
+  host:
+    - python 2.7.*
+
+  run:
+    # Base dependencies
+    - python 2.7.*    
+    - nomkl 3.0
+    - munch 2.2.*
+    - voluptuous 0.10.*
+    - click 6.7.*
+    - boltons 17.2.*
+    - deap 1.2.*
+    - pyyaml 5.1.1
+    - pychimera
+    # Objectives and genes
+    - openmm 7.3.1
+    - openmoltools 0.8.3
+    - pdbfixer 1.5
+    - cclib 1.5
+    - autodock-vina 1.1.2
+    # InsiliChem channel
+    - autodocktools-prepare 1.5.7
+    - prody 1.8.*
+
+test:
+  imports:
+    - gaudi
+  commands:
+    - gaudi -h
+    - gaudi run -h
+    - cd tests && python run_test.py -v --benchmark-disable; cd ..
+  source_files:
+    - tests
+  requires:
+    - pytest 4.0.*
+    - pytest-benchmark
+

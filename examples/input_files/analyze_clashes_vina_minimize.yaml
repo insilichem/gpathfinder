@@ -1,0 +1,65 @@
+_path: /path/to/this/input/file/param.yaml
+ga:         # Section to configure the Genetic Algorithm parameters
+    mut_pb: 0.8
+    cx_pb: 0.2
+    mut_indpb: 1
+    generations: 750
+    population: 12
+genes:      # Section to configure the genes
+-   module: gaudi.genes.molecule
+    name: Ligand
+    path: ./mol_files/ligand_with_H.mol2
+-   module: gaudi.genes.molecule
+    name: Protein
+    path: ./mol_files/protein_with_H.mol2 
+-   module: gaudi.genes.path_torsion
+    name: T
+    target: Ligand
+    anchor: Ligand/1 # This anchor atom has to be set in function of the concrete ligand (see tutorial section for more information)
+-   module: gaudi.genes.path_rotamers
+    name: R
+-   module: gaudi.genes.path_normalmodes
+    name: NM
+    target: Protein
+    modes: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    group_by: residues
+    group_lambda: 15
+    n_samples: 100
+    write_modes: True
+    write_samples: True
+    minimize: True
+    #forcefields: [/path/to/protein.prmtop] #Should be used when non-standard residues are present
+-   module: gaudi.genes.path
+    name: Pathway
+    ligand: Ligand
+    protein: Protein
+    torsion_gene: T
+    rotamers_gene: R
+    nm_gene: NM
+    min_step_increment: 0.8
+    origin: [X.xxx, Y.yyy, Z.zzz]  #Coordinates of the initial point of the pathway object of study (referred to protein .mol2 file system of coordinates)
+    destination: [X.xxx, Y.yyy, Z.zzz]  #Coordinates of the final point of the pathway object of study (referred to protein .mol2 file system of coordinates)
+objectives:     # Section to configure the evaluation of the pathways
+-   module: gaudi.objectives.path_scoring
+    name: Clashes
+    probe: Pathway
+    which: clashes
+    method: average
+    weight: -1.0
+-   module: gaudi.objectives.path_scoring
+    name: Vina
+    probe: Pathway
+    which: vina
+    method: average
+    weight: -1.0
+output:
+    check_every: 0
+    name: param     
+    pareto: True   #there are more than one objectives
+    path: /path/to/the/results/folder
+similarity:
+    args:
+    - Pathway
+    - 0.05
+    kwargs: {}
+    module: gaudi.path_similarity.pathways_rmsd
