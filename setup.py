@@ -27,8 +27,6 @@ from setuptools import setup, find_packages
 import os
 import io
 
-import versioneer
-
 import gaudi
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -47,8 +45,7 @@ long_description = read('README.rst')
 
 setup(
     name='gpathfinder',
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    version=gaudi.__version__,
     url=gaudi.__url__,
     license='Apache Software License',
     author=gaudi.__author__,
