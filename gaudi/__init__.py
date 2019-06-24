@@ -62,7 +62,3 @@ __title__ = 'GPathFinder'
 __description__ = ('Identification of ligand binding pathways \
                     by a multi-objective genetic algorithm')
 __version__ = '1.0.0'
-
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
