@@ -32,7 +32,7 @@ Your first GPathFinder calculation
 Objectives
 ==========
 
-This tutorial aims at providing an overview of a typical workflow when carrying out a GPathFinder calculation. It is divided in four sections. As all the input/output files for each section are available at **LINK_FILES**, you can follow the entire tutorial sequentially or you can choose one of the sections individually.
+This tutorial aims at providing an overview of a typical workflow when carrying out a GPathFinder calculation. It is divided in four sections. As all the input/output files for each section are available at **<https://raw.githubusercontent.com/josan82/gpathfinder/master/docs/data/tutorial_first/first_calculation.zip>`_**, you can follow the entire tutorial sequentially or you can choose one of the sections individually.
 
 We propose the example of Acetylcholine bound to Acetylcholinesterase to study the possible unbinding routes of the ligand. The structure that is going to be used corresponds to the PDB code **2ace**.
 
@@ -90,7 +90,7 @@ You have to make the following changes/adjustements in your template file:
 
 **ga section**
 
-- ``generations: XXX`` (the values provided in the templates ensure good results for a general case, but you can adjust it to reduce the computational time)
+- ``generations: XXX`` (the values provided in the templates ensure good results for a general case, but you can adjust it to reduce the computation time)
 
 **genes section**
 
@@ -117,7 +117,7 @@ Finally, you have to save your `.yaml` inside your calculation folder, for examp
 ==========================
 
 - **Necessary files for this section**: ligand.mol2/ligand_with_H.mol2, receptor.mol2/receptor_with_H.mol2, input_clashes.yaml/input_clashesvina.yaml
-- **Output files from this section**: folder with GPathFinder results. It can be found compressed in `results.zip`
+- **Output files from this section**: folder with GPathFinder results
 
 Running your calculation is as easy as open a **terminal**, activate your **conda environment** with:
 
@@ -146,5 +146,5 @@ or
 4. Visualizing results
 ======================
 
-- **Necessary files for this section**: folder with GPathFinder results (`results.zip`)
+- **Necessary files for this section**: folder with GPathFinder results
 - **Output files from this section**: None
