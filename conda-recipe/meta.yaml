@@ -25,22 +25,22 @@ requirements:
   run:
     # Base dependencies
     - python 2.7.*    
-    - nomkl 3.0
+    - nomkl 3.0.*
     - munch 2.2.*
     - voluptuous 0.10.*
     - click 6.7.*
     - boltons 17.2.*
     - deap 1.2.*
-    - pyyaml 5.1.1
+    - pyyaml 5.1.1.*
     - pychimera
     # Objectives and genes
-    - openmm 7.3.1
-    - openmoltools 0.8.3
-    - pdbfixer 1.5
-    - cclib 1.5
-    - autodock-vina 1.1.2
+    - openmm 7.3.1.*
+    - openmoltools 0.8.3.*
+    - pdbfixer 1.5.*
+    - cclib 1.5.*
+    - autodock-vina 1.1.2.*
     # InsiliChem channel
-    - autodocktools-prepare 1.5.7
+    - autodocktools-prepare 1.5.7.*
     - prody 1.8.*
 
 test:
