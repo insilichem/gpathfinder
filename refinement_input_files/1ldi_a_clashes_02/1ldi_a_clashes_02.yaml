@@ -1,0 +1,89 @@
+_path: /home/daniel/gpath
+ga:
+    cx_eta: 5
+    cx_pb: 0.35
+    generations: 500
+    lambda_: 3
+    mu: 1
+    mut_eta: 5
+    mut_indpb: 1.0
+    mut_pb: 0.45
+    population: 10
+genes:
+-   module: gaudi.genes.molecule
+    name: Ligand
+    path: ./mol_files/ligand.mol2
+-   module: gaudi.genes.molecule
+    name: Protein
+    path: ./mol_files/protein.mol2
+-   anchor: Ligand/3
+    module: gaudi.genes.path_torsion
+    name: T
+    target: Ligand
+-   module: gaudi.genes.path_rotamers
+    name: R
+-   group_by: residues
+    group_lambda: 15
+    method: prody
+    modes:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    module: gaudi.genes.path_normalmodes
+    n_samples: 100
+    name: NM
+    rmsd: 2.0
+    target: Protein
+    write_modes: true
+    write_samples: true
+-   destination:
+    - 164.547
+    - 69.0624
+    - 81.9826
+    ligand: Ligand
+    module: gaudi.genes.path
+    name: Pathway
+    nm_gene: NM
+    protein: Protein
+    rotamers_gene: R
+    torsion_gene: T
+objectives:
+-   method: average
+    module: gaudi.objectives.path_scoring
+    name: Clashes
+    probe: Pathway
+    weight: -1.0
+    which: clashes
+output:
+    check_every: 501
+    compress: true
+    history: false
+    name: 1ldi_a_clashes_02
+    pareto: false
+    path: /home/daniel/gpath
+    precision: 6
+    prompt_on_exception: true
+    verbose: true
+similarity:
+    args:
+    - Pathway
+    - 0.05
+    kwargs: {}
+    module: gaudi.path_similarity.pathways_rmsd

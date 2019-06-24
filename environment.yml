@@ -1,0 +1,24 @@
+name: gaudi
+channels:
+- insilichem
+- omnia
+- bioconda
+dependencies:
+- python=2.7
+- nomkl
+- openmm
+- openmoltools
+- pdbfixer
+- cclib
+- numpy
+- git
+- pip:
+  - pychimera
+  - munch
+  - voluptuous
+  - click
+  - boltons
+  - deap
+  - pyyaml
+  - prody==1.8.2
+
