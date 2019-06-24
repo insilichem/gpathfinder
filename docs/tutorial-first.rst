@@ -32,7 +32,7 @@ Your first GPathFinder calculation
 Objectives
 ==========
 
-This tutorial aims at providing an overview of a typical workflow when carrying out a GPathFinder calculation. It is divided in four sections. As all the input/output files for each section are available at <https://raw.githubusercontent.com/josan82/gpathfinder/master/docs/data/tutorial_first/first_calculation.zip>`_, you can follow the entire tutorial sequentially or you can choose one of the sections individually.
+This tutorial aims at providing an overview of a typical workflow when carrying out a GPathFinder calculation. It is divided in four sections. As all the input/output files for each section are available `here <https://raw.githubusercontent.com/josan82/gpathfinder/master/docs/data/tutorial_first/first_calculation.zip>`_, you can follow the entire tutorial sequentially or you can choose one of the sections individually.
 
 We propose the example of Acetylcholine bound to Acetylcholinesterase to study the possible unbinding routes of the ligand. The structure that is going to be used corresponds to the PDB code **2ace**.
 
