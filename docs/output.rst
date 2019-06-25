@@ -1,16 +1,18 @@
-.. GaudiMM: Genetic Algorithms with Unrestricted
-   Descriptors for Intuitive Molecular Modeling
-   
-   https://github.com/insilichem/gaudi
-  
-   Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
+.. GPathFinder: Identification of ligand binding pathways 
+.. by a multi-objective genetic algorithm
+
+   https://github.com/insilichem/gpathfinder
+
+   Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+   Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+   Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
    
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
-   
+
         http://www.apache.org/licenses/LICENSE-2.0
-   
+
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,6 +46,6 @@ Each `.zip` file contains all the necessary information to reproduce at atomic l
 
 - **Two `.mol2` files** with the original 3D structures of the ligand and the receptor.
 - **A `.gaudi` file** with the summary of the files.
-- **Another `.zip` file** which contains a set of `.pdb` files with all the frames of the pathway (each one has a conformation of the ligand and receptor molecules). You can open these `.pdb` files in any visualization tool like a MD-movie and work with them and analyze each frame. An example of a pathway that represents a GPathFinder solution can be found `here <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/output_files/example_pathway.zip>`_. 
+- **Another `.zip` file** which contains a set of `.pdb` files with all the frames of the pathway (each one has a conformation of the ligand and receptor molecules). You can open these `.pdb` files in any visualization tool like a MD-movie and work with them and analyze each frame. An example of a pathway that represents a GPathFinder solution can be found `here <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/output_files/example_pathway.zip>`_. 
 
 Moreover, an `allele.txt` and a `scores.txt` files are present with all the necessary information to reconstruct the pathway from the original structures and the score information for every frame. These additional files can be used by your own scripts to analyze the results in further detail.
