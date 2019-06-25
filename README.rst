@@ -36,7 +36,7 @@ GPathFinder
    :target: https://www.python.org/downloads/release/python-2716
 
 .. image:: https://img.shields.io/github/license/josan82/gpathfinder.svg?color=orange
-   :target: http://www.apache.org/licenses/LICENSE-2.0)
+   :target: http://www.apache.org/licenses/LICENSE-2.0
 
 .. image:: https://img.shields.io/static/v1.svg?label=platform&message=linux%20|%20macOS&color=lightgrey
 
