@@ -1,7 +1,7 @@
 .. GPathFinder: Identification of ligand binding pathways 
 .. by a multi-objective genetic algorithm
 
-   https://github.com/insilichem/gaudi/tree/gpathfinder
+   https://github.com/insilichem/gpathfinder
 
    Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
    Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
@@ -46,15 +46,15 @@ GaudiMM uses a YAML-formatted input file for setting up the calculation. YAML is
 
 Normally, you can start from one of our standard input files, where Genetic Algorithm parameters have been set to appropiate values for a general case:
 
-- `input file to discover unbinding pathways with clashes evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/unbinding_clashes.yaml>`_
-- `input file to discover unbinding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/unbinding_clashes_vina.yaml>`_
-- `input file to discover unbinding pathways with minimization of the receptor samples and clashes+vina evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/unbinding_clashes_vina_minimize.yaml>`_
-- `input file to discover binding pathways with clashes evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/binding_clashes.yaml>`_
-- `input file to discover binding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/binding_clashes_vina.yaml>`_
-- `input file to discover binding pathways with minimization of the receptor samples and clashes+vina evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/binding_clashes_vina_minimize.yaml>`_
-- `input file to analyze a given pathway (known starting and final points) with clashes evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/analyze_clashes.yaml>`_
-- `input file to analyze a given pathway (known starting and final points) with clashes+vina evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/analyze_clashes_vina.yaml>`_
-- `input file to analyze a given pathway (known starting and final points) with clashes+vina evaluation and minimization of the receptor <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/analyze_clashes_vina_minimize.yaml>`_
+- `input file to discover unbinding pathways with clashes evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes.yaml>`_
+- `input file to discover unbinding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina.yaml>`_
+- `input file to discover unbinding pathways with minimization of the receptor samples and clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina_minimize.yaml>`_
+- `input file to discover binding pathways with clashes evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes.yaml>`_
+- `input file to discover binding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina.yaml>`_
+- `input file to discover binding pathways with minimization of the receptor samples and clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina_minimize.yaml>`_
+- `input file to analyze a given pathway (known starting and final points) with clashes evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes.yaml>`_
+- `input file to analyze a given pathway (known starting and final points) with clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina.yaml>`_
+- `input file to analyze a given pathway (known starting and final points) with clashes+vina evaluation and minimization of the receptor <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina_minimize.yaml>`_
 
 If you want to deepen the knowledge of the different parameters and fine-tune the input file, you can follow the tutorial :ref:`tutorial-input`
 
