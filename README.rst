@@ -23,19 +23,16 @@
 GPathFinder
 ===========
 
-.. image:: https://travis-ci.org/insilichem/gaudi.svg?branch=master
-    :target: https://travis-ci.org/insilichem/gaudi
-
 .. image:: https://readthedocs.org/projects/gpathfinder/badge/?version=latest
     :target: https://gpathfinder.readthedocs.io/en/latest/
 
-.. image:: https://anaconda.org/insilichem/gaudi/badges/installer/conda.svg
+.. image:: https://anaconda.org/josan_bcn/gpathfinder/badges/installer/conda.svg
     :target: https://anaconda.org/josan_bcn/gpathfinder
 
 .. image:: https://img.shields.io/badge/python-2.7.16-blue.svg
    :target: https://www.python.org/downloads/release/python-2716
 
-.. image:: https://img.shields.io/github/license/josan82/gpathfinder.svg?color=orange
+.. image:: https://img.shields.io/github/license/insilichem/gpathfinder.svg?color=orange
    :target: http://www.apache.org/licenses/LICENSE-2.0
 
 .. image:: https://img.shields.io/static/v1.svg?label=platform&message=linux%20|%20macOS&color=lightgrey
@@ -78,7 +75,7 @@ Documentation and support
 
 Documentation source is available in ``docs/`` subdirectory, and also compiled as HTML at `this webpage <https://gpathfinder.readthedocs.io/en/latest/>`_.
 
-If you need help with GPathFinder, please use the `issues page <https://github.com/insilichem/gaudi/issues>`_ of our `GitHub repo <https://github.com/insilichem/gaudi>`_. You can drop me a message at `joseemilio.sanchez@uab.cat <mailto:joseemilio.sanchez@uab.cat>`_ too.
+If you need help with GPathFinder, please use the `issues page <https://github.com/insilichem/gpathfinder/issues>`_ of our `GitHub repo <https://github.com/insilichem/gpathfinder>`_. You can drop me a message at `joseemilio.sanchez@uab.cat <mailto:joseemilio.sanchez@uab.cat>`_ too.
 
 **Developer friendly**
 
@@ -87,7 +84,7 @@ If the provided genes and objectives are not enough, you can always code your ow
 License
 -------
 
-GPathFinder and GaudiMM are licensed under the Apache License, Version 2.0. Check the details in the `LICENSE <https://raw.githubusercontent.com/insilichem/gaudi/master/LICENSE>`_ file.
+GPathFinder and GaudiMM are licensed under the Apache License, Version 2.0. Check the details in the `LICENSE <https://raw.githubusercontent.com/insilichem/gpathfinder/master/LICENSE>`_ file.
 
 History of versions
 -------------------
@@ -99,4 +96,4 @@ OS Compatibility
 
 GPathFinder is compatible with Linux and macOS.
 
-If you find some dificulties when installing it in a concrete distribution, please use the `issues page <https://github.com/insilichem/gaudi/issues>`_ to report them.
+If you find some dificulties when installing it in a concrete distribution, please use the `issues page <https://github.com/insilichem/gpathfinder/issues>`_ to report them.
