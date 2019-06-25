@@ -1,7 +1,7 @@
 .. GPathFinder: Identification of ligand binding pathways 
 .. by a multi-objective genetic algorithm
 
-   https://github.com/insilichem/gaudi/tree/gpathfinder
+   https://github.com/insilichem/gpathfinder
 
    Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
    Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
@@ -25,7 +25,7 @@
 List of parameters
 ==================
 
-Parameters for version 1.6.3
+Parameters for version 1.0.0
 ============================
 
 **Genetic Algorithm parameters**
