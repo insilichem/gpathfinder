@@ -1,7 +1,7 @@
 .. GPathFinder: Identification of ligand binding pathways 
 .. by a multi-objective genetic algorithm
 
-   https://github.com/insilichem/gaudi/tree/gpathfinder
+   https://github.com/insilichem/gpathfinder
 
    Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
    Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
@@ -32,7 +32,7 @@ Your first GPathFinder calculation
 Objectives
 ==========
 
-This tutorial aims at providing an overview of a typical workflow when carrying out a GPathFinder calculation. It is divided in four sections. As all the input/output files for each section are available `here <https://raw.githubusercontent.com/josan82/gpathfinder/master/docs/data/tutorial_first/first_calculation.zip>`_, you can follow the entire tutorial sequentially or you can choose one of the sections individually.
+This tutorial aims at providing an overview of a typical workflow when carrying out a GPathFinder calculation. It is divided in four sections. As all the input/output files for each section are available `here <https://raw.githubusercontent.com/insilichem/gpathfinder/master/docs/data/tutorial_first/first_calculation.zip>`_, you can follow the entire tutorial sequentially or you can choose one of the sections individually.
 
 We propose the example of Acetylcholine bound to Acetylcholinesterase to study the possible unbinding routes of the ligand. The structure that is going to be used corresponds to the PDB code **2ace**.
 
@@ -78,7 +78,7 @@ If you want to optimize the solutions using only clashes, that would be enough. 
 - **Necessary files for this section**: ligand.mol2/ligand_with_H.mol2, protein.mol2/protein_with_H.mol2
 - **Output files from this section**: input_clashes.yaml/input_clashes_vina.yaml
 
-To prepare the configuration `.yaml` file, you have several templates available at :ref:`input`. Here, we are going to use either `discover unbinding pathways with clashes evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/unbinding_clashes.yaml>`_ or `discover unbinding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/josan82/gpathfinder/master/examples/input_files/unbinding_clashes_vina.yaml>`_ as base for our input configuration file.
+To prepare the configuration `.yaml` file, you have several templates available at :ref:`input`. Here, we are going to use either `discover unbinding pathways with clashes evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes.yaml>`_ or `discover unbinding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina.yaml>`_ as base for our input configuration file.
 
 .. warning:: 
 
