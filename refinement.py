@@ -949,8 +949,8 @@ def Refinement(directory, path_num, frame_start, frame_end):
 	"""
 
 	init_path = os.getcwd()
-	input_path = os.path.join(os.getcwd(),'examples', 'refinement_input_files', directory)
-	output_path = os.path.join(os.getcwd(),'examples', 'refinement_output_files', directory,
+	input_path = os.path.join(os.getcwd(), 'refinement_input_files', directory)
+	output_path = os.path.join(os.getcwd(), 'refinement_output_files', directory,
 							   'refinement' + '_' + str(frame_start).zfill(3) + '_' + str(frame_end).zfill(3) + '_' + str(time.time()))
 
 	if os.path.exists(output_path):
