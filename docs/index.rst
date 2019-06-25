@@ -1,7 +1,7 @@
 .. GPathFinder: Identification of ligand binding pathways 
 .. by a multi-objective genetic algorithm
 
-   https://github.com/insilichem/gaudi/tree/gpathfinder
+   https://github.com/insilichem/gpathfinder
 
    Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
    Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
@@ -23,17 +23,22 @@
 GPathFinder
 ===========
 
-.. image:: https://travis-ci.org/insilichem/gaudi.svg?branch=master
-    :target: https://travis-ci.org/insilichem/gaudi
-
 .. image:: https://readthedocs.org/projects/gpathfinder/badge/?version=latest
     :target: https://gpathfinder.readthedocs.io/en/latest/
 
-.. image:: https://anaconda.org/insilichem/gaudi/badges/installer/conda.svg
-    :target: https://conda.anaconda.org/insilichem/gaudi
+.. image:: https://anaconda.org/josan_bcn/gpathfinder/badges/installer/conda.svg
+    :target: https://anaconda.org/josan_bcn/gpathfinder
 
-.. image:: https://img.shields.io/badge/doi-10.1002%2Fjcc.24847-blue.svg
-    :target: http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full
+.. image:: https://img.shields.io/badge/python-2.7.16-blue.svg
+   :target: https://www.python.org/downloads/release/python-2716
+
+.. image:: https://img.shields.io/github/license/insilichem/gpathfinder.svg?color=orange
+   :target: http://www.apache.org/licenses/LICENSE-2.0
+
+.. image:: https://img.shields.io/static/v1.svg?label=platform&message=linux%20|%20macOS&color=lightgrey
+
+.. .. image:: https://img.shields.io/badge/doi-10.1002%2Fjcc.24847-blue.svg
+..   :target: http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full
 
 GPathFinder is an extension built over GaudiMM core to allow the identification 
 of ligand binding pathways at atomistic level.
