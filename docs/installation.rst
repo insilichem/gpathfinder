@@ -105,4 +105,4 @@ GPathFinder is compatible with Linux and macOS. This installation procedure has 
 - OpenSUSE Leap 15.1
 - Manjaro 18.0.4
 
-If you find some dificulties when installing it in a concrete distribution, please use the `issues page <https://github.com/insilichem/gpathfinder/issues>`_ to report them.
+If you find some difficulties when installing it in a concrete distribution, please use the `issues page <https://github.com/insilichem/gpathfinder/issues>`_ to report them.
