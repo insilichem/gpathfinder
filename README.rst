@@ -30,7 +30,7 @@ GPathFinder
     :target: https://gpathfinder.readthedocs.io/en/latest/
 
 .. image:: https://anaconda.org/insilichem/gaudi/badges/installer/conda.svg
-    :target: https://conda.anaconda.org/josan_bcn/gpathfinder
+    :target: https://anaconda.org/josan_bcn/gpathfinder
 
 .. image:: https://img.shields.io/badge/python-2.7.16-blue.svg
    :target: https://www.python.org/downloads/release/python-2716
