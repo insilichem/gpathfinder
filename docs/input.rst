@@ -75,7 +75,7 @@ The requirements for the receptor file are:
 
 The requirements for the ligand file are:
 
-- In the case of unbinding pathway discovery, it is recommended that the 3D coordinates correspond to the binded position. Otherwise, the center of the binding site should be indicated explicitly in the `.yaml` configuration file (parameter ``gaudi.genes.path.origin``.
+- In the case of unbinding pathway discovery, it is recommended that the 3D coordinates correspond to the binded position. Otherwise, the center of the binding site should be indicated explicitly in the `.yaml` configuration file (parameter ``gaudi.genes.path.origin``).
 - In the case of clashes evaluation, it is not necessary to add Hydrogens if the user doesn't want to consider them.
 - In the case of clashes+vina evaluation, adding Hydrogens is mandatory.
 
