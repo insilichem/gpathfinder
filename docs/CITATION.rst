@@ -27,20 +27,20 @@ GPathFinder is scientific software, funded by public research grants (Spanish MI
 
 GaudiMM, root development over GPathFinder is built, is also scientific software, funded by public research grants (Spanish MINECO's project ``CTQ2014-54071-P``, Generalitat de Catalunya's project ``2014SGR989`` and research grant ``2015FI_B00768``, COST Action ``CM1306``).
 
-If you make use of GPathFinder in scientific publications, please cite `our article in IJMS <http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full>`_. GaudiMM has also its `own article in JCC <http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full>`_. It will help measure the impact of our research and future funding!
+If you make use of GPathFinder in scientific publications, please cite `our article in IJMS <https://www.mdpi.com/1422-0067/20/13/3155>`_. GaudiMM has also its `own article in JCC <http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full>`_. It will help measure the impact of our research and future funding!
 
 .. code-block:: latex
 
-    @article {IJMS:XXXXXX,
+    @article {IJMS:ijms20133155,
         author = {Sánchez-Aparicio, José-Emilio and Sciortino, Giuseppe and Viladrich Herrmannsdoerfer, Daniel and Orenes Chueca, Pablo and Rodríguez-Guerra Pedregal, Jaime and Maréchal, Jean-Didier},
         title = {GPathFinder: identification of ligand binding pathways by a multi-objective genetic algorithm},
         journal = {International Journal of Molecular Sciences},
-        volume = {},
-        number = {},
-        issn = {},
-        url = {},
-        doi = {},
-        pages = {},
+        volume = {20},
+        number = {13},
+        issn = {1422-0067},
+        url = {https://www.mdpi.com/1422-0067/20/13/3155},
+        doi = {https://doi.org/10.3390/ijms20133155 },
+        pages = {3155},
         keywords = {multi-objective genetic algorithm, molecular modeling, ligand diffusion, computational chemistry, molecular docking, drug design},
         year = {2019},
     }
