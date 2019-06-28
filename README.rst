@@ -37,8 +37,8 @@ GPathFinder
 
 .. image:: https://img.shields.io/static/v1.svg?label=platform&message=linux%20|%20macOS&color=lightgrey
 
-.. .. image:: https://img.shields.io/badge/doi-10.1002%2Fjcc.24847-blue.svg
-..   :target: http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full
+.. image:: https://img.shields.io/badge/doi-10.3390%2Fijms20133155-blue.svg 
+   :target: https://www.mdpi.com/1422-0067/20/13/3155
 
 GPathFinder is an extension built over GaudiMM core to allow the identification 
 of ligand binding pathways at atomistic level.
