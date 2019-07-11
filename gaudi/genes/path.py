@@ -713,6 +713,7 @@ class Pathway(GeneProvider):
         with open(scoresname, 'w') as f:
             f.write(pp.pformat(self.scores))
 
+        pdb_file_global = []
         with ZipFile(fullname, 'w', ZIP_STORED) as z:
             z.write(allelename, os.path.basename(allelename))
             os.remove(allelename)
@@ -724,9 +725,15 @@ class Pathway(GeneProvider):
                 framename = os.path.join(path, "frame_{:03d}.pdb".format(i))
                 chimera.pdbWrite([self.ligand_mol, self.protein_mol], 
                                     chimera.Xform(), framename)
+                with open(framename) as frame_file:
+                    line = frame_file.readline()
+                    while line:
+                        pdb_file_global.append(line)
+                        line = frame_file.readline()
                 z.write(framename, os.path.basename(framename))
                 os.remove(framename)
                 self.gp_unexpress(i)
+            print(pdb_file_global)
         return fullname
 
     #####        
