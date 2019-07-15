@@ -713,7 +713,6 @@ class Pathway(GeneProvider):
         with open(scoresname, 'w') as f:
             f.write(pp.pformat(self.scores))
 
-        pdb_file_global = []
         with ZipFile(fullname, 'w', ZIP_STORED) as z:
             z.write(allelename, os.path.basename(allelename))
             os.remove(allelename)
@@ -721,19 +720,52 @@ class Pathway(GeneProvider):
             os.remove(scoresname)
             #Pdb files with the actual frames of the pathway
             for i in range(0, len(self.allele['positions'])):
+                
                 self.gp_express(i)
                 framename = os.path.join(path, "frame_{:03d}.pdb".format(i))
-                chimera.pdbWrite([self.ligand_mol, self.protein_mol], 
+                chimera.pdbWrite([self.protein_mol, self.ligand_mol], 
                                     chimera.Xform(), framename)
+                
+                # Prepare pdb files with format required by Chimera MD movie import
                 with open(framename) as frame_file:
+                    pdb_file_lines = []
                     line = frame_file.readline()
                     while line:
-                        pdb_file_global.append(line)
+                        if (line[:5] != "MODEL" and
+                            line[:6] != "ENDMDL" and
+                            line[:6] != "CONECT" and
+                            line[:3] != "END"):
+                            pdb_file_lines.append(line)
                         line = frame_file.readline()
+                
+                os.remove(framename)
+                with open(framename, 'w') as f:
+                    prev_atom = 0
+                    prev_res = 0
+                    last_change_res = 0
+                    for line in pdb_file_lines:
+                        l_split = line.split()
+                        current_atom, current_res = int(l_split[1]), int(l_split[5])
+                        if current_atom > prev_atom:
+                            prev_atom = current_atom
+                        else:
+                            current_atom = prev_atom + 1
+                            prev_atom = current_atom
+                        if current_res > prev_res:
+                            prev_res = current_res
+                            last_change_res = current_res
+                        elif current_res != last_change_res:
+                            last_change_res = current_res
+                            prev_res += 1
+                            current_res = prev_res
+                        else:
+                            current_res = prev_res
+                        line = line[:7] + '{:4d}'.format(current_atom) + line[11:23] + '{:3d}'.format(current_res) + line[26:]
+                        f.write("%s" % line)  
+                    
                 z.write(framename, os.path.basename(framename))
                 os.remove(framename)
                 self.gp_unexpress(i)
-            print(pdb_file_global)
         return fullname
 
     #####        
