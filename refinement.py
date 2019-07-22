@@ -524,9 +524,9 @@ class RRT:
 		if 'rotamers' in points:
 			if points['rotamers'][0] is not []:
 				frame = chimera.openModels.open(frame_path)
-				frame_protein = frame[1]
+				frame_protein = frame[0]
 				framep1 = chimera.openModels.open(framep1_path)
-				framep1_protein = framep1[1]
+				framep1_protein = framep1[0]
 				residues = points['rotamers']
 				chi_init, residue_init = residues[self.frame_num][0], residues[self.frame_num][1]
 				chi_end, residue_end = residues[self.frame_num + 1][0], residues[self.frame_num + 1][1]
