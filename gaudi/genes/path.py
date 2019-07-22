@@ -718,6 +718,7 @@ class Pathway(GeneProvider):
             os.remove(allelename)
             z.write(scoresname, os.path.basename(scoresname))
             os.remove(scoresname)
+            
             #Pdb files with the actual frames of the pathway
             for i in range(0, len(self.allele['positions'])):
                 
