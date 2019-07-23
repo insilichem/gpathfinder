@@ -92,6 +92,10 @@ def ea_mu_plus_lambda(population, toolbox, mu, lambda_, cxpb, mutpb, ngen, cfg,
     registered in the toolbox. This algorithm uses the :func:`varOr`
     variation.
     """
+    if cxpb + mutpb != 1:
+        logger.error('The sum of mut_pb and cx_pb should be 1.0')
+        sys.exit()
+
     t0 = time()
     population_ = population[:]
     logbook = tools.Logbook()
@@ -245,8 +249,12 @@ def dump_population(population, cfg, subdir=None):
 
             sf_writer.writerow(['Path','Frame'] + header_keys)
             for path in paths:
+                average_values = [0.0 for k in header_keys[:-3]] #only scores are averaged, not coords
                 for i, frame in enumerate(summary[path]):
                     values_frame = [path, '{:03d}'.format(i)] + [frame[k] for k in header_keys]
+                    average_values = [sum(x) for x in zip(values_frame[2:-3], average_values)]
                     sf_writer.writerow(values_frame)
+                average_values = [x / (i+1) for x in average_values]
+                sf_writer.writerow([path, 'Average'] + average_values + ['', '', ''])
     except:
         pass
