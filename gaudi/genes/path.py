@@ -713,11 +713,33 @@ class Pathway(GeneProvider):
         with open(scoresname, 'w') as f:
             f.write(pp.pformat(self.scores))
 
+        #Pdb file with the trajectory of the pathway
+        trajname = os.path.join(path, 'trajectory.pdb')    
+        points = self.allele['positions']
+        mol = chimera.Molecule()
+        r = mol.newResidue("path", " ", 1, " ")
+        atoms = []
+        atom = mol.newAtom("0", chimera.Element("H"))
+        atoms.append(atom)
+        point = [x[3] for x in points[0]]
+        atoms[-1].setCoord(chimera.Point(*point))
+        r.addAtom(atoms[-1])
+        for i in range(1, len(points)):
+            point = [x[3] for x in points[i]]
+            atom = mol.newAtom(str(i), chimera.Element("H"))
+            atoms.append(atom)
+            atoms[-1].setCoord(chimera.Point(*point))
+            r.addAtom(atoms[-1])
+            mol.newBond(atoms[i-1], atoms[i])
+        chimera.pdbWrite([mol], chimera.Xform(), trajname)
+
         with ZipFile(fullname, 'w', ZIP_STORED) as z:
             z.write(allelename, os.path.basename(allelename))
             os.remove(allelename)
             z.write(scoresname, os.path.basename(scoresname))
             os.remove(scoresname)
+            z.write(trajname, os.path.basename(trajname))
+            os.remove(trajname)
             
             #Pdb files with the actual frames of the pathway
             for i in range(0, len(self.allele['positions'])):
@@ -767,6 +789,7 @@ class Pathway(GeneProvider):
                 z.write(framename, os.path.basename(framename))
                 os.remove(framename)
                 self.gp_unexpress(i)
+        
         return fullname
 
     #####        
