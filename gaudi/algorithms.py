@@ -43,8 +43,10 @@ from deap.algorithms import varOr
 import yaml
 import gaudi
 import random
+import copy
 import csv
 import numpy as np
+import itertools
 
 logger = logging.getLogger(__name__)
 
@@ -146,20 +148,32 @@ def ea_mu_plus_lambda(population, toolbox, mu, lambda_, cxpb, mutpb, ngen, cfg,
 
             # Evaluate the individuals with an invalid fitness
             t1 = time()
+            
             invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
             fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
             
             for ind, fit in zip(invalid_ind, fitnesses):
                 ind.fitness.values = fit
 
-            # Update the hall of fame with the generated individuals
+            # Remove similar individuals
             new_population = population + offspring
+            copy_pop = new_population[:]
+            combs = list(itertools.combinations(copy_pop, 2))
+            pairs_selected = similar_pairs(combs, toolbox)
+            cln_pop = remove_similar(pairs_selected, copy_pop)
+            while len(cln_pop) < mu: #add inds if len of pop is not enough
+                cln_pop.append(random.choice(new_population))
+
+
+            new_population = cln_pop[:]
+            # Update the hall of fame with the generated individuals
             if halloffame is not None:
                 halloffame.clear()
                 halloffame.update(new_population)
 
             # Select the next generation population
             population[:] = toolbox.select(new_population, mu)
+
             # Update the statistics with the new population
             nevals = len(invalid_ind)
             t2 = time()
@@ -196,6 +210,50 @@ def ea_mu_plus_lambda(population, toolbox, mu, lambda_, cxpb, mutpb, ngen, cfg,
                 except Exception:
                     logger.warn('Could not write checkpoing for gen #%s', gen)
     return population_, logbook
+
+def similar_pairs(pair_list, toolbox):
+    """
+    Helper function to detect similar solutions.
+    
+    Parameters
+    ----------
+    pair_list : tuple
+        All pairs of individuals of the population.
+    toolbox 
+        Auxiliar registered functions in deap
+    
+    Returns
+    -------
+    pairs_selected : list
+        List of pairs of similar individuals.
+    """
+
+    pairs_selected = []
+    for pair in pair_list:
+        if toolbox.similarity(pair[0], pair[1]):
+            pairs_selected.append(pair)
+    return pairs_selected
+
+def remove_similar(pairs, full_pop):
+    """
+    Method to remove similar solutions at each generation.
+
+    Parameters
+    ----------
+    pairs : list of pairs of individuals
+        List of pairs of similar individuals
+    full_pop : list of individuals
+        Whole population
+    """
+
+    for pair in pairs:
+        if not all(i in full_pop for i in pair):
+            continue
+        if pair[0].fitness <= pair[1].fitness:
+            full_pop.remove(pair[0])
+        else:
+            full_pop.remove(pair[1])
+    return full_pop
 
 def construct_path_summary(population, cfg):
     summary = {}
