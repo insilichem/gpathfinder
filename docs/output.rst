@@ -59,4 +59,4 @@ Moreover, an `allele.txt` and a `scores.txt` files are present with all the nece
     :align: left
     :height: 10px
     :alt: NEW!
-Finally, a `trajectory.pdb` file contains the route that follows the ligand, as a set of points that represent the center of the ligand at each step of the trajectory. This can be used to easily compare the trajetory of different solutions obtained from GPathFinder calculations.
+Finally, a `trajectory.pdb` file which contains the route that follows the ligand, as a set of points that represent the center of the ligand at each step of the trajectory. This can be used to easily compare the trajectory of different solutions obtained from GPathFinder calculations.
