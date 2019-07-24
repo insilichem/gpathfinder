@@ -37,9 +37,14 @@ or
 
 Running GAUDI jobs is quite easy with :mod:`gaudi.cli.gaudi_run`. Put in your terminal:
 
+.. image:: data/new.jpeg
+    :align: left
+    :height: 10px
+    :alt: NEW!
+
 ::
 
-    gaudi run /path/to/input_file.yaml
+    gpath run /path/to/input_file.yaml
 
 You will need at least three input files. A `.yaml` file with the configuration of the job and two `.mol2` files for the ligand and the receptor molecules. To learn how to create input files, go to :ref:`input`. You can also check the tutorials :ref:`tutorial-input` and :ref:`tutorial-mol2`.
 
