@@ -2,23 +2,24 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 José-Emilio Sánchez-Aparicio, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
-# implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############
@@ -29,8 +30,8 @@ to/from the binding site of a receptor (typically a protein).
 
 This module must be used in conjunction with at least the following
 three genes:
-- A GaudiMM standard ``molecule`` gene for the ligand molecule.
-- A GaudiMM standard ``molecule`` gene for the protein molecule.
+- A GPathFinder standard ``molecule`` gene for the ligand molecule.
+- A GPathFinder standard ``molecule`` gene for the protein molecule.
 - A GPathFinder ``path_torsion`` gene applied on the ligand to allow its 
 flexibility.
 
@@ -66,9 +67,9 @@ from Molecule import atom_positions
 from chimera import Xform as X
 from FitMap.search import random_rotation
 
-# GAUDI
-from gaudi.genes import GeneProvider
-from gaudi import parse
+# GPATH
+from gpath.genes import GeneProvider
+from gpath import parse
 
 IDENTITY = ((1.0, 0.0, 0.0, 0.0),
             (0.0, 1.0, 0.0, 0.0),
@@ -90,10 +91,10 @@ class Pathway(GeneProvider):
     Parameters
     ----------
     ligand : str
-        Name of the GaudiMM ``molecule`` gene containing the ligand
+        Name of the GPathFinder ``molecule`` gene containing the ligand
         molecule.
     protein : str
-        Name of the GaudiMM ``molecule`` gene containing the receptor
+        Name of the GPathFinder ``molecule`` gene containing the receptor
         molecule.
     torsion_gene : str, optional
         Name of the GPathFinder ``path_torsion`` gene to allow flexibility of 

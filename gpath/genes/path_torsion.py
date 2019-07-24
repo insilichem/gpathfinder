@@ -2,24 +2,24 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 José-Emilio Sánchez-Aparicio, Jaime Rodriguez-Guerra,
-#                Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
-# implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############
@@ -27,7 +27,7 @@
 """
 This module helps explore small molecules flexibility.
 
-It does so by performing bond rotations in the selected `gaudi.genes.molecule.Molecule`
+It does so by performing bond rotations in the selected `gpath.genes.molecule.Molecule`
 objects, if they exhibit free bond rotations.
 
 It also needs a GPathFinder `path` gene.
@@ -45,9 +45,9 @@ from Molecule import atom_positions
 # External dependencies
 import numpy as np
 from deap.tools import cxSimulatedBinaryBounded, mutPolynomialBounded
-# GAUDI
-from gaudi.genes import GeneProvider
-from gaudi import parse, box
+# GPATH
+from gpath.genes import GeneProvider
+from gpath import parse, box
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +60,7 @@ class Torsion(GeneProvider):
     Parameters
     ----------
     target: str
-        Name of gaudi.genes.molecule instance to perform rotation on
+        Name of gpath.genes.molecule instance to perform rotation on
     flexibility : int or float
         Maximum number of degrees a bond can rotate
     max_bonds :

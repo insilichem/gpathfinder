@@ -2,19 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,7 +31,7 @@ to expand its original features, such as appending new molecules.
 This allows to build new structures with a couple of building blocks as a starting
 point, as well as keeping several ligands as different potential solutions to the
 essay (think about multi-molecule alternative docking). The user can also request
-more :mod:`gaudi.genes.molecule` instances for the genome of the individual,
+more :mod:`gpath.genes.molecule` instances for the genome of the individual,
 resulting in a competitive multi-docking essay.
 
 To handle all this diversity, each construction is cached the first time is built.
@@ -64,11 +66,11 @@ from boltons.cacheutils import LRU
 from pdbfixer import PDBFixer
 from simtk.openmm.app import PDBFile
 
-# GAUDI
-from gaudi import box, parse
-from gaudi.genes import GeneProvider
-from gaudi.genes import search
-from gaudi.exceptions import AtomsNotFound, ResiduesNotFound, TooManyAtoms, TooManyResidues
+# GPATH
+from gpath import box, parse
+from gpath.genes import GeneProvider
+from gpath.genes import search
+from gpath.exceptions import AtomsNotFound, ResiduesNotFound, TooManyAtoms, TooManyResidues
 
 ZERO = chimera.Point(0.0, 0.0, 0.0)
 logger = logging.getLogger(__name__)
@@ -82,8 +84,8 @@ def enable(**kwargs):
 class Molecule(GeneProvider):
 
     """
-    Interface around the :class:`gaudi.genes.molecule.Compound` to handle
-    the GAUDI protocol and caching features.
+    Interface around the :class:`gpath.genes.molecule.Compound` to handle
+    the GPATH protocol and caching features.
 
     Parameters
     ----------
@@ -98,7 +100,7 @@ class Molecule(GeneProvider):
         Add hydrogens to Molecule (True) or not (False).
 
     pdbfix : bool, optional
-        Only for testing and debugging. Better run pdbfixer prior to GAUDI.
+        Only for testing and debugging. Better run pdbfixer prior to GPATH.
         Fix potential issues that may cause troubles with OpenMM forcefields.
 
     Attributes
@@ -110,7 +112,7 @@ class Molecule(GeneProvider):
 
     _CATALOG : dict
         Class attribute (shared among all `Molecule` instances) that holds
-        all the possible molecules GAUDI can build given current `path`.
+        all the possible molecules GPATH can build given current `path`.
 
         If `path` is a single molecule file, that's the only possibility, but
         if it's set to a directory, the engine can potentially build all the
@@ -235,7 +237,7 @@ class Molecule(GeneProvider):
         elif absolute:
             fullname = absolute
         else:
-            fileobject, fullname = tempfile.mkstemp(prefix='gaudi', suffix='.{}'.format(filetype))
+            fileobject, fullname = tempfile.mkstemp(prefix='gpath', suffix='.{}'.format(filetype))
             logger.warning("No output path provided. Using tempfile %s.", fullname)
 
         molecules = [self.compound.mol]
@@ -272,7 +274,7 @@ class Molecule(GeneProvider):
 
         Returns
         -------
-        gaudi.genes.molecule.Compound
+        gpath.genes.molecule.Compound
             The result of building the requested molecule.
 
         """
@@ -468,7 +470,7 @@ class Compound(object):
             self.mol = molecules[0]
             chimera.openModels.remove(molecules)
 
-        self.mol.gaudi = self
+        self.mol.gpath = self
         self.rotatable_bonds = []
         self.built_atoms = []
         self.donor = self.mol.atoms[0]
@@ -615,7 +617,7 @@ class Compound(object):
             donor = molecule.donor
         updated_atoms = self.join(molecule, acceptor, donor)
 
-        # Update Gaudi ATTR
+        # Update GPath ATTR
         self.update_attr(updated_atoms)  # update existant atoms
         self.acceptor = updated_atoms[molecule.acceptor]  # change acceptor
         self.axis_end = updated_atoms[molecule.axis_end]

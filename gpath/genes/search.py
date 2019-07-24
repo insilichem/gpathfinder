@@ -2,19 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,7 +31,7 @@ It works by creating a sphere with radius `self.radius` and origin at
 `self.origin`. The movement is achieved with three matrices that contain
 a translation, a rotation, and a reference position.
 
-It depends on :class:`gaudi.genes.molecule.Molecule`, since these are the ones
+It depends on :class:`gpath.genes.molecule.Molecule`, since these are the ones
 that will be moved around. Combined with the adequate objectives, this module
 can be used to implement docking experiments.
 
@@ -44,9 +46,9 @@ import chimera
 from chimera import Xform as X
 import Matrix as M
 from FitMap.search import random_rotation
-# GAUDI
-from gaudi.genes import GeneProvider
-from gaudi import parse
+# GPATH
+from gpath.genes import GeneProvider
+from gpath import parse
 
 
 ZERO = chimera.Point(0.0, 0.0, 0.0)
@@ -323,7 +325,7 @@ def parse_origin(origin, individual=None):
     Parameters
     ----------
     origin : 3-item list of coordinates, or chimera.Atom
-    genes : gaudi.parse.Settings.genes
+    genes : gpath.parse.Settings.genes
         List of gene-dicts to look for molecules that may contain
         the referred atom in `origin`
 

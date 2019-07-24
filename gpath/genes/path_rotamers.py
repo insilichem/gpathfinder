@@ -2,24 +2,24 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 José-Emilio Sánchez-Aparicio, Jaime Rodriguez-Guerra,
-#                Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
-# implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############
@@ -28,7 +28,7 @@
 This modules allows to explore side chains flexibility
 in proteins, as well as mutation.
 
-It needs that at least a :class:`gaudi.genes.rotamers.molecule.Molecule` has been
+It needs that at least a :class:`gpath.genes.rotamers.molecule.Molecule` has been
 requested in the input file. Residues of those are referenced in the `residues` argument.
 
 It also needs a GPathFinder `path` gene.
@@ -47,9 +47,9 @@ from chimera.phipsi import chiAtoms, AtomsMissingError
 from Rotamers import getRotamerParams, getRotamers, NoResidueRotamersError
 # External dependencies
 import deap.tools
-# GAUDI
-from gaudi import parse, box
-from gaudi.genes import GeneProvider
+# GPATH
+from gpath import parse, box
+from gpath.genes import GeneProvider
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +71,7 @@ class Rotamers(GeneProvider):
 
             [ Protein/233, Protein/109 ]
 
-        where the first element (before slash) is the gaudi.genes.molecule name
+        where the first element (before slash) is the gpath.genes.molecule name
         and the second element (after slash) is the residue position number in that
         molecule.
 

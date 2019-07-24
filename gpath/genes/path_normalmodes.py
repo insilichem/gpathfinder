@@ -2,24 +2,24 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 José-Emilio Sánchez-Aparicio, Jaime Rodriguez-Guerra,
-#                Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
-# implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############
@@ -31,7 +31,7 @@ through normal modes analysis.
 It works by calculating normal modes for the input molecule and moving 
 along a combination of normal modes.
 
-It needs at least a GPathFinder `path` gene and a GaudiMM `molecule` gene.
+It needs at least a GPathFinder `path` gene and a GPathFinder `molecule` gene.
 
 """
 
@@ -50,10 +50,10 @@ import simtk.openmm.app as openmm_app
 import prody
 from boltons.cacheutils import LRU
 from cclib.parser import Gaussian
-# GAUDI
-from gaudi.genes import GeneProvider
-from gaudi import parse
-from gaudi.objectives import path_energy as energy
+# GPATH
+from gpath.genes import GeneProvider
+from gpath import parse
+from gpath.objectives import path_energy as energy
 
 logger = logging.getLogger(__name__)
 _openmm_builtin_forcefields = os.listdir(os.path.join(openmm_app.__path__[0], 'data'))
@@ -120,7 +120,7 @@ class NormalModes(GeneProvider):
         It can be a .prmtop file containing the parametrization and 
         topology of the Protein.
     auto_parametrize: list of str, optional, default=None
-        Used when ``minimize`` is True. List of ``molecule`` GaudiMM gene 
+        Used when ``minimize`` is True. List of ``molecule`` GPathFinder gene 
         instances that will be tried to auto parametrize with antechamber.
     parameters : list of 2-item list of str, optional, default=None
         Used when ``minimize`` is True. List of (gaff.mol2, .frcmod) 
