@@ -39,7 +39,7 @@ Running GAUDI jobs is quite easy with :mod:`gaudi.cli.gaudi_run`. Put in your te
 
 .. image:: data/new.jpeg
     :align: left
-    :height: 10px
+    :height: 30px
     :alt: NEW!
 
 ::
