@@ -3,13 +3,13 @@
 
 package:
   name: gpathfinder
-  version: 1.0.0
+  version: 1.0.1
 
 about:
-  home: https://github.com/insilichem/gaudi/tree/gpathfinder
+  home: https://github.com/insilichem/gpathfinder
   license: Apache
   license_file: LICENSE
-  summary: identification of ligand binding pathways by a multi-objective gentic algorithm
+  summary: identification of ligand binding pathways by a multi-objective genetic algorithm
 
 source:
   path: ../
@@ -45,10 +45,10 @@ requirements:
 
 test:
   imports:
-    - gaudi
+    - gpath
   commands:
-    - gaudi -h
-    - gaudi run -h
+    - gpath -h
+    - gpath run -h
     - cd tests && python run_test.py -v --benchmark-disable; cd ..
   source_files:
     - tests
