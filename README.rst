@@ -77,10 +77,10 @@ Features
 Version 1.0.1 25th July 2019
 ----------------------------
 
-- New `summary.csv` file in the output with score data of all the solutions.
-- New format for the `.pdb` files of the output that can be imported as a MD movie in UCSF Chimera.
-- New `trajectory.pdb` file in the output. For each solution, shows the trajectory of the ligand, taking its center as a reference.
-- Command to lauch the program is now `gpath run` instead of `gaudi run` to ensure compatibility with GaudiMM.
+- New ``summary.csv`` file in the output with score data of all the solutions.
+- New format for the ``.pdb`` files of the output that can be imported as a MD movie in UCSF Chimera.
+- New ``trajectory.pdb`` file in the output. For each solution, shows the trajectory of the ligand, taking its center as a reference.
+- Command to lauch the program is now ``gpath run`` instead of ``gaudi run`` to ensure compatibility with GaudiMM.
 - Bug fix: similarity between solutions is calculated now at each generation, to avoid some cases where repeated or very similar solutions appeared, especially when using only clashes evaluation.
 
 Documentation and support
@@ -103,13 +103,13 @@ History of versions
 -------------------
 
 - **v1.0.1:** 25th July 2019
-New `summary.csv` file in the output with score data of all the solutions.
+New ``summary.csv`` file in the output with score data of all the solutions.
 
-New format for the `.pdb` files of the output that can be imported as a MD movie in UCSF Chimera.
+New format for the ``.pdb`` files of the output that can be imported as a MD movie in UCSF Chimera.
 
-New `trajectory.pdb` file in the output. For each solution, shows the trajectory of the ligand, taking its center as a reference.
+New ``trajectory.pdb`` file in the output. For each solution, shows the trajectory of the ligand, taking its center as a reference.
 
-Command to lauch the program is now `gpath run` instead of `gaudi run` to ensure compatibility with GaudiMM.
+Command to lauch the program is now ``gpath run`` instead of `gaudi run` to ensure compatibility with GaudiMM.
 
 Bug fix: similarity between solutions is calculated now at each generation, to avoid some cases where repeated or very similar solutions appeared, especially when using only clashes evaluation.
 
