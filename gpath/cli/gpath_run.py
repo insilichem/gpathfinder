@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
 # 
-# https://github.com/insilichem/gaudi
+# https://github.com/insilichem/gpathfinder
 #
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,17 +25,17 @@
 ##############
 
 """
-`gaudi.cli.gaudi_run` is the main hub for launching GAUDI jobs.
+`gpath.cli.gpath_run` is the main hub for launching GPATH jobs.
 
 It sets up the configuration environment needed by DEAP (responsible for the GA)
-and ties it up to the GAUDI custom classes that shape up the invididuals and
+and ties it up to the GPATH custom classes that shape up the invididuals and
 objectives. All in a loosely-coupled approach based on Python modules called on-demand.
 
 **Usage**. Simply, type:
 
 .. code-block :: console
 
-    gaudi run /path/to/job.gaudi-input
+    gpath run /path/to/job.gpath-input
 """
 
 # Python
@@ -54,37 +56,37 @@ import deap.tools
 import deap.base
 import deap.algorithms
 # from multiprocess import Pool
-# GAUDI
-import gaudi.algorithms
-import gaudi.base
-import gaudi.box
-import gaudi.genes
-import gaudi.objectives
-import gaudi.parse
-import gaudi.plugin
-import gaudi.similarity
+# GPATH
+import gpath.algorithms
+import gpath.base
+import gpath.box
+import gpath.genes
+import gpath.objectives
+import gpath.parse
+import gpath.plugin
+import gpath.similarity
 
 def launch(cfg):
     """
-    Runs a GAUDI job
+    Runs a GPATH job
 
     Parameters
     ----------
-    cfg : gaudi.parse.Settings
+    cfg : gpath.parse.Settings
         Parsed YAML dict with attribute-like access
     """
-    gaudi.plugin.import_plugins(*cfg.genes)
-    gaudi.plugin.import_plugins(*cfg.objectives)
+    gpath.plugin.import_plugins(*cfg.genes)
+    gpath.plugin.import_plugins(*cfg.objectives)
     import_module(cfg.similarity.module.rsplit('.', 1)[0])
 
     # DEAP setup: Fitness, Individuals, Population
     toolbox = deap.base.Toolbox()
     toolbox.register("call", (lambda fn, *args, **kwargs: fn(*args, **kwargs)))
-    toolbox.register("individual", toolbox.call, gaudi.base.MolecularIndividual, cfg)
+    toolbox.register("individual", toolbox.call, gpath.base.MolecularIndividual, cfg)
     toolbox.register("population", deap.tools.initRepeat, list, toolbox.individual)
     population = toolbox.population(n=cfg.ga.population)
 
-    environment = gaudi.base.Environment(cfg)
+    environment = gpath.base.Environment(cfg)
 
     toolbox.register("evaluate", lambda ind: environment.evaluate(ind))
     toolbox.register("mate", (lambda ind1, ind2: ind1.mate(ind2)))
@@ -122,7 +124,7 @@ def launch(cfg):
     # Begin evolution
     mu = int(cfg.ga.mu * cfg.ga.population)
     lambda_ = int(cfg.ga.lambda_ * cfg.ga.population)
-    population, log = gaudi.algorithms.ea_mu_plus_lambda(
+    population, log = gpath.algorithms.ea_mu_plus_lambda(
         population, toolbox, cfg=cfg, mu=mu, lambda_=lambda_,
         cxpb=cfg.ga.cx_pb, mutpb=cfg.ga.mut_pb, 
         ngen=cfg.ga.generations, halloffame=elite,
@@ -155,7 +157,7 @@ def enable_logging(path=None, name=None, debug=False):
             self._fmt = format_orig
             return result
 
-    logger = logging.getLogger('gaudi')
+    logger = logging.getLogger('gpath')
     logger.setLevel(logging.DEBUG)
 
     # create CONSOLE handler and set level to error
@@ -167,7 +169,7 @@ def enable_logging(path=None, name=None, debug=False):
 
     # create debug file handler and set level to debug
     if path and name:
-        handler = logging.FileHandler(os.path.join(path, name + ".gaudi-log"), 'w')
+        handler = logging.FileHandler(os.path.join(path, name + ".gpath-log"), 'w')
         if debug:
             handler.setLevel(logging.DEBUG)
         else:
@@ -196,22 +198,22 @@ def unbuffer_stdout():
     sys.stdout = Unbuffered(sys.stdout)
 
 
-#@gaudi.box.do_cprofile
+#@gpath.box.do_cprofile
 def main(cfg, debug=False):
     """
-    Starts a GAUDI job
+    Starts a GPATH job
 
     Parameters
     ----------
-    cfg : str or gaudi.parse.Settings
+    cfg : str or gpath.parse.Settings
         Path to YAML input file or an already parsed YAML file
-        via gaudi.parse.Settings class
+        via gpath.parse.Settings class
     debug : bool, optional, default=False
         Whether to enable verbose logging or not.
     """
     # Parse input file
     if isinstance(cfg, basestring) and os.path.isfile(cfg):
-        cfg = gaudi.parse.Settings(cfg)
+        cfg = gpath.parse.Settings(cfg)
     
     # Enable logging to stdout and file
     unbuffer_stdout()
@@ -228,7 +230,7 @@ def main(cfg, debug=False):
         f.write(cfg.toYAML())
 
     # Disable Chimera's auto ksdssp
-    chimera.triggers.addHandler("Model", gaudi.box.suppress_ksdssp, None)
+    chimera.triggers.addHandler("Model", gpath.box.suppress_ksdssp, None)
 
     # Run simulation
     try:
@@ -237,13 +239,13 @@ def main(cfg, debug=False):
         logger.log(100, '  Objectives: %s', ', '.join([o.name for o in cfg.objectives]))
         pop, log, best = launch(cfg)
     except Exception as e:
-        log_path = os.path.join(cfg.output.path, cfg.output.name + ".gaudi-log")
+        log_path = os.path.join(cfg.output.path, cfg.output.name + ".gpath-log")
         logger.error('An exception occurred: %s\n    '
                      'Check traceback in logfile %s', e, log_path)
         logger.log(15, "An exception occurred", exc_info=True)
         sys.exit(1)
 
-    gaudi.algorithms.dump_population(best, cfg)
+    gpath.algorithms.dump_population(best, cfg)
     logger.handlers = []
 
 #Class HallOfFame with a bug fixed in the update method
