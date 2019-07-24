@@ -62,9 +62,10 @@ or
  
 
 5 - Run it!
+
 .. image:: data/new.jpeg
     :align: left
-    :height: 10px
+    :height: 30px
     :alt: NEW!
 
 ::
