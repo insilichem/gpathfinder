@@ -25,8 +25,8 @@
 List of parameters
 ==================
 
-Parameters for version 1.0.0
-============================
+Parameters for versions 1.0.x 
+=============================
 
 **Genetic Algorithm parameters**
 
