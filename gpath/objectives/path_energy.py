@@ -2,20 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 Jaime Rodriguez-Guerra, Jose-Emilio Sánchez-Aparicio
-# Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -43,9 +44,9 @@ from mdtraj import Topology as MDTrajTopology
 from openmoltools.amber import run_antechamber
 from openmoltools.utils import create_ffxml_file
 import numpy
-# GAUDI
-from gaudi import parse
-from gaudi.objectives import ObjectiveProvider
+# GPATH
+from gpath import parse
+from gpath.objectives import ObjectiveProvider
 
 logger = logging.getLogger(__name__)
 _openmm_builtin_forcefields = os.listdir(os.path.join(openmm_app.__path__[0], 'data'))
@@ -71,7 +72,7 @@ class Energy(ObjectiveProvider):
     forcefields : list of str, default=('amber99sbildn.xml',)
         Which forcefields to use
     auto_parametrize: list of str, default=None
-        List of Molecule instances GAUDI should try to auto parametrize with antechamber.
+        List of Molecule instances GPATH should try to auto parametrize with antechamber.
     parameters : list of 2-item list of str
         List of (gaff.mol2, .frcmod) files to use as parametrization source.
     platform : str
@@ -162,7 +163,7 @@ class Energy(ObjectiveProvider):
         coordinates = self.chimera_molecule_to_openmm_positions(*molecules)
 
         # Build topology if it's first time or a dynamic job
-        if self.topology is None or not self._gaudi_is_static(individual):
+        if self.topology is None or not self._gpath_is_static(individual):
             self.topology = self.chimera_molecule_to_openmm_topology(*molecules)
             self._simulation = None  # This forces a Simulation rebuild
 
@@ -209,7 +210,7 @@ class Energy(ObjectiveProvider):
         Parameters
         ----------
         molecule : list of chimera.Molecule
-        individual : gaudi.base.Individual
+        individual : gpath.base.Individual
             The individual to be analyzed for dynamic behaviour
         Returns
         -------
@@ -221,7 +222,7 @@ class Energy(ObjectiveProvider):
         coordinates = self.chimera_molecule_to_openmm_positions(*molecules)
 
         # Build topology if it's first time or a dynamic job
-        if self.topology is None or not self._gaudi_is_static(individual):
+        if self.topology is None or not self._gpath_is_static(individual):
             self.topology = self.chimera_molecule_to_openmm_topology(*molecules)
             self._simulation = None  # This forces a Simulation rebuild
         self.simulation.context.setPositions(coordinates)
@@ -324,15 +325,15 @@ class Energy(ObjectiveProvider):
             gaffmol2s.append(gaffmol2)
         return create_ffxml_file(gaffmol2s, frcmods)
 
-    def _gaudi_is_static(self, individual):
+    def _gpath_is_static(self, individual):
         """
         Check if this essay is performing topology changes.
         Genes that can change topologies:
-            - gaudi.genes.rotamers with mutations ON
-            - gaudi.genes.molecule with block building enabled
+            - gpath.genes.rotamers with mutations ON
+            - gpath.genes.molecule with block building enabled
         Parameters
         ----------
-        individual : gaudi.base.Individual
+        individual : gpath.base.Individual
             The individual to be analyzed for dynamic behaviour
         Returns
         -------

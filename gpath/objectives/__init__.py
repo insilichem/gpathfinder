@@ -2,19 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +25,7 @@
 ##############
 
 """
-Objectives are modules that reside in the `gaudi.objectives` package,
+Objectives are modules that reside in the `gpath.objectives` package,
 and have a certain class structure
 """
 
@@ -33,9 +35,9 @@ import logging
 from uuid import uuid4
 # Chimera
 import chimera
-# GAUDI
-from gaudi import plugin, parse
-from gaudi.base import Environment
+# GPATH
+from gpath import plugin, parse
+from gpath.base import Environment
 
 logger = logging.getLogger(__name__)
 

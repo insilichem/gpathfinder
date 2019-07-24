@@ -2,20 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 Jaime Rodriguez-Guerra, José-Emilio Sánchez-Aparicio
-# Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,8 +34,8 @@ import os
 import sys
 from subprocess import call, check_output, CalledProcessError
 from tempfile import _get_default_tempdir, _get_candidate_names
-from gaudi.objectives import ObjectiveProvider
-from gaudi import parse
+from gpath.objectives import ObjectiveProvider
+from gpath import parse
 import MolKit
 from AutoDockTools.MoleculePreparation import AD4ReceptorPreparation, AD4LigandPreparation
 

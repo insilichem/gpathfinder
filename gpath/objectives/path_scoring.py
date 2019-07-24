@@ -2,23 +2,24 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2019 José-Emilio Sánchez-Aparicio, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
-# implied.
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##############
@@ -41,7 +42,7 @@ There are the following methods of evaluation:
        ligand between one frame and the next one. Typically, the goal 
        will be to minimize the smoothness score (weight=-1).
 The selected method will be applied over all the frames of the pathway. 
-A global score for the pathway will be returned to GaudiMM for its 
+A global score for the pathway will be returned to GPathFinder for its 
 evaluation stage, and individual scores of each frame will be stored in
 the ``path`` gene for further export in the output files.
 """
@@ -67,9 +68,9 @@ import DetectClash
 from chimera import Xform as X
 import Matrix as M
 
-# GAUDI
-from gaudi import parse
-from gaudi.objectives import ObjectiveProvider, path_vina
+# GPATH
+from gpath import parse
+from gpath.objectives import ObjectiveProvider, path_vina
 
 logger = logging.getLogger(__name__)
 _openmm_builtin_forcefields = os.listdir(os.path.join(openmm_app.__path__[0], 'data'))
@@ -86,11 +87,11 @@ class PathScoring(ObjectiveProvider):
     Parameters
     ----------
     probe : str
-        Name of the Gpath ``pathway`` gene that is object of analysis.
+        Name of the GPathFinder ``pathway`` gene that is object of analysis.
     ligand : str, optional, defaults to 'Ligand'
-        Name of the GaudiMM ``molecule`` gene representing the ligand.
+        Name of the GPathFinder ``molecule`` gene representing the ligand.
     protein : str, optional, defaults to 'Protein'
-        Name of the GaudiMM ``molecule`` gene representing the protein.
+        Name of the GPathFinder ``molecule`` gene representing the protein.
     radius : float, optional, defaults to 5.0
         Maximum distance from any point of the ligand in every frame 
         that is searched for possible interactions.
