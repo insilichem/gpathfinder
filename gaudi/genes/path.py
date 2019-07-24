@@ -757,7 +757,8 @@ class Pathway(GeneProvider):
                         if (line[:5] != "MODEL" and
                             line[:6] != "ENDMDL" and
                             line[:6] != "CONECT" and
-                            line[:3] != "END"):
+                            line[:3] != "END" and 
+                            line[:3] != "TER"):
                             pdb_file_lines.append(line)
                         line = frame_file.readline()
                 
