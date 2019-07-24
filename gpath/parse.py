@@ -2,19 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +43,7 @@ from munch import Munch, munchify
 from voluptuous import *
 from voluptuous.humanize import validate_with_humanized_errors
 # Own
-import gaudi
+import gpath
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +83,7 @@ def Molecule_name(v):
     .. code-block:: python
 
         def fn(v):
-            valid = [i['name'] for i in items if i['module'] == 'gaudi.genes.molecule']
+            valid = [i['name'] for i in items if i['module'] == 'gpath.genes.molecule']
             if v not in valid:
                 raise Invalid("{} is not a valid Molecule name".format(v))
             return v
@@ -129,8 +131,7 @@ def ResidueThreeLetterCode(v):
 
 def RelPathToInputFile(inputpath=None):
     if inputpath is None:
-        # inputpath = os.environ.get('GAUDI_INPUT_PATH', '')
-        inputpath = getattr(gaudi, '__input_path__', '')
+        inputpath = getattr(gpath, '__input_path__', '')
 
     @wraps(RelPathToInputFile)
     def fn(v):
@@ -202,7 +203,7 @@ class Settings(Munch):
     output.check_every : int, optional, defaults to 10
         Dump the elite population every n generations. Switched off if set to 0.
     output.prompt_on_exception : bool, optional, defaults to True
-        When an exception is raised, GaudiMM tries to dump the current population
+        When an exception is raised, GPathFinder tries to dump the current population
         to disk as an emergency rescue plan. This includes pressing Ctrl+C. If this
         happens, it prompts the user whether to dump it or not. For interactive
         sessions this is desirable, but no so much for unsupervised cluster jobs.
@@ -239,7 +240,7 @@ class Settings(Munch):
     similarity.module : str
         The function to call when a fitness draw happens. It should be
         expressed as Python importable path; ie, separated by dots:
-        ``gaudi.similarity.rmsd``.
+        ``gpath.path_similarity.pathways_rmsd``.
     similarity.args : list
         Positional arguments to the similarity function.
     similarity.kwargs : dict
@@ -319,9 +320,9 @@ class Settings(Munch):
     def __init__(self, path=None, validation=True):
         data = self.default_values.copy()
         if path is not None:
-            gaudi.__input_path__ = os.environ['GAUDI_INPUT_PATH'] = os.path.dirname(path)
+            gpath.__input_path__ = os.environ['GPATH_INPUT_PATH'] = os.path.dirname(path)
             with open(path) as f:
-                loaded = yaml.load(f)
+                loaded = yaml.safe_load(f)
             if validation:
                 loaded = self.validate(loaded)
             data = deep_update(data, loaded)

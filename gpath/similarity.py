@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
 # 
-# https://github.com/insilichem/gaudi
+# https://github.com/insilichem/gpathfinder
 #
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,10 +40,10 @@ def rmsd(ind1, ind2, subjects, threshold, *args, **kwargs):
 
     Parameters
     ----------
-    ind1 : gaudi.base.Individual
-    ind2 : gaudi.base.Individual
+    ind1 : gpath.base.Individual
+    ind2 : gpath.base.Individual
     subjects : list of str
-        Name of gaudi.genes.molecule instances to measure
+        Name of gpath.genes.molecule instances to measure
     threshold : float
         Maximum RMSD value to consider two individuals as similar.
         If ``rmsd > threshold``, they are considered different.

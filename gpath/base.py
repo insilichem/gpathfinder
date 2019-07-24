@@ -2,19 +2,21 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
+# 
+# https://github.com/insilichem/gpathfinder
 #
-# https://github.com/insilichem/gaudi
-#
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
-#
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
+# 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#
+# 
 #      http://www.apache.org/licenses/LICENSE-2.0
-#
+# 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -42,10 +44,10 @@ import chimera
 # External dependencies
 import deap.base
 import yaml
-# GAUDI
-import gaudi.plugin
-import gaudi.similarity
-from gaudi.exceptions import MoleculesNotFound
+# GPATH
+import gpath.plugin
+import gpath.similarity
+from gpath.exceptions import MoleculesNotFound
 
 pp = pprint.PrettyPrinter(4)
 logger = logging.getLogger(__name__)
@@ -64,7 +66,7 @@ class BaseIndividual(object):
 
     Parameters
     ----------
-    cfg : gaudi.parse.Settings
+    cfg : gpath.parse.Settings
         The full parsed object from the configuration YAML file.
     cache : dict or dict-like
         A mutable object that can be used to store values across instances.
@@ -107,7 +109,7 @@ class BaseIndividual(object):
         `__init__`.
         """
         if self.cfg is not None:
-            gaudi.plugin.load_plugins(self.cfg.genes, container=self.genes,
+            gpath.plugin.load_plugins(self.cfg.genes, container=self.genes,
                                       parent=self,
                                       cx_eta=self.cfg.ga.cx_eta,
                                       mut_eta=self.cfg.ga.mut_eta,
@@ -259,7 +261,7 @@ class BaseIndividual(object):
                     os.remove(filename)
                     output[name] = os.path.basename(filename)
             output['score'] = list(self.fitness.values)
-            z.writestr('{}_{:03d}.gaudi'.format(name, i),
+            z.writestr('{}_{:03d}.gpath'.format(name, i),
                        yaml.dump(output, default_flow_style=False))
         self.unexpress()
         return zipfilename
@@ -324,11 +326,11 @@ def expressed(*individuals):
 class Environment(object):
     """
     Objective container and helper to evaluate an individual. It must be
-    instantiated with a gaudi.parse.Settings object.
+    instantiated with a gpath.parse.Settings object.
 
     Parameters
     ----------
-    cfg : gaudi.parse.Settings
+    cfg : gpath.parse.Settings
         The parsed configuration YAML file that contains objectives information
     """
 
@@ -338,7 +340,7 @@ class Environment(object):
         self.cfg = cfg
         if self.cfg is not None:
             self.weights = self.cfg.weights
-            gaudi.plugin.load_plugins(self.cfg.objectives,
+            gpath.plugin.load_plugins(self.cfg.objectives,
                                       container=self.objectives,
                                       zone=self.zone, environment=self,
                                       precision=self.cfg.output.precision)

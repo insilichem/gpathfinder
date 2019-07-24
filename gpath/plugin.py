@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
 # 
-# https://github.com/insilichem/gaudi
+# https://github.com/insilichem/gpathfinder
 #
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,7 +75,7 @@ def import_plugins(*pluginlist):
 
     Parameters
     ----------
-    pluginlist : list of gaudi.parse.Param
+    pluginlist : list of gpath.parse.Param
         Usually, the genes or objectives list resulting from
         the configuration parsing.
 
@@ -100,7 +102,7 @@ def load_plugins(plugins, container=None, **kwargs):
 
     Parameters
     ----------
-    plugins : list of `gaudi.parse.Param`
+    plugins : list of `gpath.parse.Param`
         Modules to load. Each Param must have a `module` attr with a full import path.
     container : dict or dict-like
         If provided, use this container to retain instances across individuals.
