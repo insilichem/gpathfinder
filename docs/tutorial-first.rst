@@ -135,13 +135,13 @@ Go to your calculation folder, where `input_clashes.yaml` or `input_clashes_vina
 
 ::
 
-   gaudi run input_clashes.yaml
+   gpath run input_clashes.yaml
 
 or
 
 ::
 
-   gaudi run input_clashes_vina.yaml
+   gpath run input_clashes_vina.yaml
 
 4. Visualizing results
 ======================
