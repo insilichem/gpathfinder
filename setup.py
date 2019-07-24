@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
 # 
-# https://github.com/insilichem/gaudi
+# https://github.com/insilichem/gpathfinder
 #
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,7 +29,7 @@ from setuptools import setup, find_packages
 import os
 import io
 
-import gaudi
+import gpath
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -45,12 +47,12 @@ long_description = read('README.rst')
 
 setup(
     name='gpathfinder',
-    version=gaudi.__version__,
-    url=gaudi.__url__,
+    version=gpath.__version__,
+    url=gpath.__url__,
     license='Apache Software License',
-    author=gaudi.__author__,
+    author=gpath.__author__,
     author_email='joseemilio.sanchez@uab.cat',
-    description=gaudi.__description__,
+    description=gpath.__description__,
     long_description=long_description,
     packages=find_packages(),
     include_package_data=True,
@@ -70,7 +72,7 @@ setup(
     # install_requires='deap click repoze.lru bunch voluptuous pyyaml'.split(),
     entry_points='''
         [console_scripts]
-        gaudi=gaudi.cli.gaudi_cli:cli
+        gpath=gpath.cli.gpath_cli:cli
         '''
     ,
 )
