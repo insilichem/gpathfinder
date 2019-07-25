@@ -277,7 +277,7 @@ class Settings(Munch):
         },
         'similarity': {
             'module': 'path_similarity.pathways_rmsd',
-            'args': ['Pathway', 0.05],
+            'args': ['Pathway', 1.0],
             'kwargs': {}
         },
         'genes': [{}],
