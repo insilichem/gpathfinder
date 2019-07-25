@@ -214,12 +214,22 @@ def main(cfg, debug=False):
     # Parse input file
     if isinstance(cfg, basestring) and os.path.isfile(cfg):
         cfg = gpath.parse.Settings(cfg)
-    
+
     # Enable logging to stdout and file
     unbuffer_stdout()
     logger = enable_logging(cfg.output.path, cfg.output.name, debug=debug)
     logger.log(100, 'Loaded input %s', cfg._path)
 
+    # Check names of the modules (should be gpath)
+    for m in cfg.genes + cfg.objectives + [cfg.similarity]:
+        if 'gpath' not in m.module:
+            logger.error("From version 1.0.1 all genes, objectives and similarity " \
+                        "modules should be imported from gpath. Please, check your " \
+                        ".yaml file (sections: genes, objectives and similarity) and " \
+                        "change old references to gaudi modules by gpath. For example: " \
+                        "gaudi.genes.molecule should be gpath.genes.molecule")
+            sys.exit()
+    
     # Round population to multiple of 4 if necessary
     if cfg.ga.population % 4 > 0:
         cfg.ga.population = int(4 * round(float(cfg.ga.population)/4))
