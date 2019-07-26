@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 ##############
-# GaudiMM: Genetic Algorithms with Unrestricted
-# Descriptors for Intuitive Molecular Modeling
+# GPathFinder: Identification of ligand pathways by a multi-objective
+# genetic algorithm
 # 
-# https://github.com/insilichem/gaudi
+# https://github.com/insilichem/gpathfinder
 #
-# Copyright 2017 Jaime Rodriguez-Guerra, Jean-Didier Marechal
+# Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
+# Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+# Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,13 +58,13 @@ from Molecule import atom_positions
 import pprint
 pp = pprint.PrettyPrinter(4)
 
-import gaudi
-from gaudi import base
-from gaudi.genes import path_normalmodes
-from gaudi.genes import molecule
-from gaudi.genes import path_torsion as torsion
-from gaudi.genes import path_rotamers as rotamers
-from gaudi.objectives import contacts
+import gpath
+from gpath import base
+from gpath.genes import path_normalmodes
+from gpath.genes import molecule
+from gpath.genes import path_torsion as torsion
+from gpath.genes import path_rotamers as rotamers
+from gpath.objectives import contacts
 
 
 def parse_rotamers(chi_groups,node):
@@ -376,25 +378,25 @@ class RRT:
 		    start node configuration corresponding to the state at frame frame_num+1
 		config_start : dict
 		    start node configuration corresponding to the state at frame frame_num
-		contacts_objective : gaudi objective
+		contacts_objective : gpath objective
 		    
 		frame_vdw_volume : float
 		    total Van der Wals volume of the ligand and active rotamers 
 		goal: bool
 			records whether the algorithm has been able to connect the initial and final configurations
-		ind : gaudi individual
+		ind : gpath individual
 		  
 		iteration_counter : int
 		    counter that will keep track of the total number of iterations of the RRT-algorithm
 		ligand : chimera molecule
 
-		ligand_gene : gaudi gene
+		ligand_gene : gpath gene
 
 		next_normal_mode_sample : numpy array
 		    atom coordiantes corresponding to the normal mode deformation of the frame framenum+1
 		next_sample_number : int
 		    normal modes sample number for the frame frame_number+1
-		nm_gene : gaudi gene
+		nm_gene : gpath gene
 		    Description
 		normal_mode_sample : numpy array
 		    atom coordinates corresponding to the normal mode deformation of the frame framenum
@@ -402,9 +404,9 @@ class RRT:
 		    list of nodes connecting the start and end configuration
 		protein : chimera molecule
 		    
-		protein_gene : gaudi gene
+		protein_gene : gpath gene
 		   
-		rotamer_gene : gaudi gene
+		rotamer_gene : gpath gene
 		    
 		rotamer_start : list
 		    list of rotamer angles with values corresponding to their start configuration
@@ -412,7 +414,7 @@ class RRT:
 		    normal modes sample number for the frame frame_number
 		to_zero : tuple
 		    matrix that centers the ligand to the origin before applying the second transformation to set it in the right location
-		torsion_gene : gaudi gene
+		torsion_gene : gpath gene
 
 
 
@@ -425,9 +427,9 @@ class RRT:
 
 		for file in os.listdir(self.input_path):
 			if str(self.path_num).zfill(3)+'.zip' in file:
-				gaudizip = file
+				gpathzip = file
 
-		zip_path = os.path.join(self.input_path, gaudizip)
+		zip_path = os.path.join(self.input_path, gpathzip)
 
 		with zipfile.ZipFile(zip_path) as myzip:
 			for file_name in myzip.namelist():
@@ -524,9 +526,9 @@ class RRT:
 		if 'rotamers' in points:
 			if points['rotamers'][0] is not []:
 				frame = chimera.openModels.open(frame_path)
-				frame_protein = frame[1]
+				frame_protein = frame[0]
 				framep1 = chimera.openModels.open(framep1_path)
-				framep1_protein = framep1[1]
+				framep1_protein = framep1[0]
 				residues = points['rotamers']
 				chi_init, residue_init = residues[self.frame_num][0], residues[self.frame_num][1]
 				chi_end, residue_end = residues[self.frame_num + 1][0], residues[self.frame_num + 1][1]

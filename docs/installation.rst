@@ -63,9 +63,14 @@ or
 
 5 - Run it!
 
+.. image:: data/new.jpeg
+    :align: left
+    :height: 30px
+    :alt: NEW!
+
 ::
 
-  gaudi
+  gpath
 
 
 Check everything is OK
@@ -75,22 +80,22 @@ If everything went OK, you will get the usage screen:
 
 .. code-block:: console
 
-    Usage: gaudi [OPTIONS] COMMAND [ARGS]...
+    Usage: gpath [OPTIONS] COMMAND [ARGS]...
 
-      GaudiMM: Genetic Algorithms with Unrestricted Descriptors for Intuitive
-      Molecular Modeling
+      GPathFinder: Indentification of ligand pathways by a multi-objective
+      genetic algorithm
 
-      (C) 2017, InsiliChem
-      https://github.com/insilichem/gaudi
+      (C) 2019, InsiliChem
+      https://github.com/insilichem/gpathfinder
 
     Options:
       --version   Show the version and exit.
       -h, --help  Show this message and exit.
 
     Commands:
-      prepare  Create or edit a GAUDI input file.
-      run      Launch a GAUDI input file.
-      view     Analyze the results in a GAUDI output file.
+      prepare  Create or edit a GPATH input file.
+      run      Launch a GPATH input file.
+      view     Analyze the results in a GPATH output file.
 
 OS Compatibility
 ================

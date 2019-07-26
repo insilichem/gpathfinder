@@ -6,19 +6,19 @@ ga:         # Section to configure the Genetic Algorithm parameters
     generations: 750
     population: 12
 genes:      # Section to configure the genes
--   module: gaudi.genes.molecule
+-   module: gpath.genes.molecule
     name: Ligand
     path: ./mol_files/ligand_with_H.mol2
--   module: gaudi.genes.molecule
+-   module: gpath.genes.molecule
     name: Protein
     path: ./mol_files/protein_with_H.mol2 
--   module: gaudi.genes.path_torsion
+-   module: gpath.genes.path_torsion
     name: T
     target: Ligand
     anchor: Ligand/1 # This anchor atom has to be set in function of the concrete ligand (see tutorial section for more information)
--   module: gaudi.genes.path_rotamers
+-   module: gpath.genes.path_rotamers
     name: R
--   module: gaudi.genes.path_normalmodes
+-   module: gpath.genes.path_normalmodes
     name: NM
     target: Protein
     modes: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
@@ -27,7 +27,7 @@ genes:      # Section to configure the genes
     n_samples: 100
     write_modes: True
     write_samples: True
--   module: gaudi.genes.path
+-   module: gpath.genes.path
     name: Pathway
     ligand: Ligand
     protein: Protein
@@ -36,13 +36,13 @@ genes:      # Section to configure the genes
     nm_gene: NM
     min_step_increment: 0.8
 objectives:     # Section to configure the evaluation of the pathways
--   module: gaudi.objectives.path_scoring
+-   module: gpath.objectives.path_scoring
     name: Clashes
     probe: Pathway
     which: clashes
     method: max
     weight: -1.0
--   module: gaudi.objectives.path_scoring
+-   module: gpath.objectives.path_scoring
     name: Vina
     probe: Pathway
     which: vina
@@ -56,6 +56,8 @@ output:
 similarity:
     args:
     - Pathway
-    - 0.05
+    - 1.0
     kwargs: {}
-    module: gaudi.path_similarity.pathways_rmsd
+    module: gpath.path_similarity.pathways_rmsd
+
+# Input file to be used with GPathFinder v.1.0.1

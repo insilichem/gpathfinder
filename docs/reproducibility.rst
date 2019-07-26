@@ -30,6 +30,6 @@ One of the key aspects of every research project is its reproducibility. Sometim
 When reporting results obtained by a GPathFinder calculation, you should provide the following information:
 
 - The full `.yaml` file, for example, in the supporting information.
-- The version of the program you have used (for example, v.1.0.0). This will allow to deduce the values for the parameters that are not explicitly reported in the `.yaml` file.
+- The version of the program you have used (for example, v.1.0.1). This will allow to deduce the values for the parameters that are not explicitly reported in the `.yaml` file.
 
 The information of the default parameters for each version is provided in :ref:`parameters` section.

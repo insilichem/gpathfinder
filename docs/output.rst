@@ -31,7 +31,12 @@ The results of the calculation will be saved inside a folder on the path indicat
 
 - **A `.gaudi-log` file**: contains the log information of the calculation, with data about the time employed in the execution, the evolution of the scores along the calculation and possible errors/warnings.
 - **A `.yaml` file**: contains a replica of the `.yaml` input file employed in the calculation.
-- **A `.gaudi-output` file**: contains a summary of the obtained results, with data about their scores and name of the file that actually has the pathway.
+- **A `.gpath-output` file**: contains a summary of the obtained results, with data about their scores and name of the file that actually has the pathway. Can be used to get an overview of the quality of the solutions.
+.. image:: data/new.jpeg
+    :align: left
+    :height: 30px
+    :alt: NEW!
+- **A `summary.csv` file**: contains a summary of the scoring of all obtained results, detailed by frame. Also contains the coordinates of every solution (considering the center of mass of the ligand at every frame of the pathway). Can be used to see at a frame detail the quality of a concrete solution and differences between solutions.
 - **A set of `.zip` files**: contain the different pathways obtained from the calculation. The number of solutions will be equal to the population size if ``output.pareto`` was set to `False` or equal to the size of the pareto frontier (i.e. dominant solutions) otherwise.
 
 **Optional files**
@@ -49,3 +54,9 @@ Each `.zip` file contains all the necessary information to reproduce at atomic l
 - **Another `.zip` file** which contains a set of `.pdb` files with all the frames of the pathway (each one has a conformation of the ligand and receptor molecules). You can open these `.pdb` files in any visualization tool like a MD-movie and work with them and analyze each frame. An example of a pathway that represents a GPathFinder solution can be found `here <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/output_files/example_pathway.zip>`_. 
 
 Moreover, an `allele.txt` and a `scores.txt` files are present with all the necessary information to reconstruct the pathway from the original structures and the score information for every frame. These additional files can be used by your own scripts to analyze the results in further detail.
+
+.. image:: data/new.jpeg
+    :align: left
+    :height: 30px
+    :alt: NEW!
+Finally, a `trajectory.pdb` file which contains the route that follows the ligand, as a set of points that represent the center of the ligand at each step of the trajectory. This can be used to easily compare the trajectory of different solutions obtained from GPathFinder calculations.
