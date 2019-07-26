@@ -34,6 +34,6 @@ It can be used as follows:
            
 The refinement_input_files directory already contains example files suited to be run, for example:
 
-python refinement.py 1ldi_a_clashes_02 0 10 20
+python refinement.py 1ldi_a_clashes_01 0 10 20
 
 runs the refinement process of the path in file 1ldi_a_clashes_02_000  through frames 10 to 20 and outputs a log file and the path .pdb file in the refinemnt_output_files directory.
