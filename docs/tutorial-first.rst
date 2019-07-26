@@ -116,7 +116,7 @@ Finally, you have to save your `.yaml` inside your calculation folder, for examp
 3. Running the calculation
 ==========================
 
-- **Necessary files for this section**: ligand.mol2/ligand_with_H.mol2, receptor.mol2/receptor_with_H.mol2, input_clashes.yaml/input_clashesvina.yaml
+- **Necessary files for this section**: ligand.mol2/ligand_with_H.mol2, receptor.mol2/receptor_with_H.mol2, input_clashes.yaml/input_clashes_vina.yaml
 - **Output files from this section**: folder with GPathFinder results
 
 Running your calculation is as easy as open a **terminal**, activate your **conda environment** with:
