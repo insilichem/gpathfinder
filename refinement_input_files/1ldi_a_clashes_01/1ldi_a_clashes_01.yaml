@@ -1,0 +1,89 @@
+_path: 1ldi_a_clashes_01.yaml
+ga:
+    cx_eta: 5
+    cx_pb: 0.2
+    generations: 500
+    lambda_: 1
+    mu: 1
+    mut_eta: 5
+    mut_indpb: 1.0
+    mut_pb: 0.8
+    population: 12
+genes:
+-   module: gpath.genes.molecule
+    name: Ligand
+    path: ./mol_files/ligand.mol2
+-   module: gpath.genes.molecule
+    name: Protein
+    path: ./mol_files/protein.mol2
+-   anchor: Ligand/3
+    module: gpath.genes.path_torsion
+    name: T
+    target: Ligand
+-   module: gpath.genes.path_rotamers
+    name: R
+-   group_by: residues
+    group_lambda: 15
+    method: prody
+    modes:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+    - 17
+    - 18
+    - 19
+    module: gpath.genes.path_normalmodes
+    n_samples: 100
+    name: NM
+    rmsd: 2.0
+    target: Protein
+    write_modes: true
+    write_samples: true
+-   destination:
+    - 164.547
+    - 69.0624
+    - 81.9826
+    ligand: Ligand
+    module: gpath.genes.path
+    name: Pathway
+    nm_gene: NM
+    protein: Protein
+    rotamers_gene: R
+    torsion_gene: T
+objectives:
+-   method: average
+    module: gpath.objectives.path_scoring
+    name: Clashes
+    probe: Pathway
+    weight: -1.0
+    which: clashes
+output:
+    check_every: 501
+    compress: true
+    history: false
+    name: 1ldi_a_clashes_01
+    pareto: false
+    path: 1ldi_a_clashes_01
+    precision: 6
+    prompt_on_exception: true
+    verbose: true
+similarity:
+    args:
+    - Pathway
+    - 1.0
+    kwargs: {}
+    module: gpath.path_similarity.pathways_rmsd
