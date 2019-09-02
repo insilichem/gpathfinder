@@ -69,11 +69,7 @@ Features
 - Steric clashes
 - Vina scoring function
 - Smoothness of the ligand movements
-
-.. image:: docs/data/new.jpeg
-    :align: left
-    :height: 30px
-    :alt: NEW!    
+ 
 Version 1.0.1 25th July 2019
 ----------------------------
 
