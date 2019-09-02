@@ -162,4 +162,4 @@ The corresponding `.zip` file (in this case, `2ace_clashes_000.zip`) contains th
 	:align: center
 	:alt: Unbinding_movie
 
-Whatever option you choose, you will end with the desired structure/s in your visualization tool, so you can use it for further analysis. If you want to deepen the analysis of GPathFinder solutions, you can follow the tutorial :ref:`tutorial_output`.
+Whatever option you choose, you will end with the desired structure/s in your visualization tool, so you can use it for further analysis. If you want to deepen the analysis of GPathFinder solutions, you can follow the tutorial :ref:`tutorial-output`.
