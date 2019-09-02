@@ -25,10 +25,6 @@
 Your first GPathFinder calculation
 ==================================
 
-.. warning:: 
-
-   This tutorial is work in progress.
-
 Objectives
 ==========
 
@@ -148,3 +144,22 @@ or
 
 - **Necessary files for this section**: folder with GPathFinder results
 - **Output files from this section**: None
+
+Inside the `results` folder you can find, among other files, a `summary.csv` file with an overview of the solutions that GPathFinder has obtained from your calculation. As any standard `.csv` file, you can open it with `LibreOffice Calc`, `Microsoft Excel` or any other editor you want.
+
+For each solution, you will find the scoring (clashes, vina, etc.) and the coordinates of the ligand at every frame forming the (un)binding pathway. Moreover, the last line of every solution will be the average score for all the frames of the pathway. For example, the solution called "2ace_clashes_000" has 23 frames with a clashes average of 18.2 Angstroms<sup>3</sup>:
+
+.. image:: data/tutorial_first/tutorial_first_img4.png
+    :align: center
+    :alt: Summary_of_solutions
+
+The corresponding `.zip` file (in this case, `2ace_clashes_000.zip`) contains the actual information about the solution. For a complete description of all the files, you can follow the tutorial :ref:`output`. Here we are centering on visualize the structures that form the (un)binding pathway. To do so, you have two possibilities:
+
+- Open the ``2ace_clashes_000.zip -> Pathway_000_Pathway.zip -> frame_XXX.pdb`` files directly with your favourite visualization tool (e.g. UCSF Chimera). They contain the structure of the receptor + ligand complex at every position (frame) of the (un)binding process, so you can choose the frames that you want and examine them individually.
+- Use the ``Tools -> MD/Ensemble Analysis -> MD Movie`` in UCSF Chimera (select the `PDB frames contained in multiple files` option). It will open the frames that you select as a movie, so you can analyze the (un)binding process:
+
+.. image:: docs/tutorial_first/tutorial_first_img5.gif
+	:align: center
+	:alt: Unbinding_movie
+
+Whatever option you choose, you will end with the desired structure/s in your visualization tool, so you can use it to analyze it/them.
