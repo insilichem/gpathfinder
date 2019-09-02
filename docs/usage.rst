@@ -37,11 +37,6 @@ or
 
 Running GAUDI jobs is quite easy with :mod:`gaudi.cli.gaudi_run`. Put in your terminal:
 
-.. image:: data/new.jpeg
-    :align: left
-    :height: 30px
-    :alt: NEW!
-
 ::
 
     gpath run /path/to/input_file.yaml
