@@ -147,7 +147,7 @@ or
 
 Inside the `results` folder you can find, among other files, a `summary.csv` file with an overview of the solutions that GPathFinder has obtained from your calculation. As any standard `.csv` file, you can open it with `LibreOffice Calc`, `Microsoft Excel` or any other editor you want.
 
-For each solution, you will find the scoring (clashes, vina, etc.) and the coordinates of the ligand at every frame forming the (un)binding pathway. Moreover, the last line of every solution will be the average score for all the frames of the pathway. For example, the solution called "2ace_clashes_000" has 23 frames with a clashes average of 18.2 Angstroms :sup:`3`:
+For each solution, you will find the scoring (clashes, vina, etc.) and the coordinates of the ligand at every frame forming the (un)binding pathway. Moreover, the last line of every solution will be the average score for all the frames of the pathway. For example, the solution called "2ace_clashes_000" has 23 frames with a clashes average of 18.2 Å\ :sup:`3`:
 
 .. image:: data/tutorial_first/tutorial_first_img4.png
     :align: center
