@@ -153,12 +153,12 @@ For each solution, you will find the scoring (clashes, vina, etc.) and the coord
     :align: center
     :alt: Summary_of_solutions
 
-The corresponding `.zip` file (in this case, `2ace_clashes_000.zip`) contains the actual information about the solution. For a complete description of all the files, you can follow the tutorial :ref:`output`. Here we are centering on visualize the structures that form the (un)binding pathway. To do so, you have two possibilities:
+The corresponding `.zip` file (in this case, `2ace_clashes_000.zip`) contains the actual information about the solution. For a complete description of all the files, you can refer to the section :ref:`output`. Here we are centering on visualize the structures that form the (un)binding pathway. To do so, you have two possibilities:
 
 - Open the ``2ace_clashes_000.zip -> Pathway_000_Pathway.zip -> frame_XXX.pdb`` files directly with your favourite visualization tool (e.g. UCSF Chimera). They contain the structure of the receptor + ligand complex at every position (frame) of the (un)binding process, so you can choose the frames that you want and examine them individually.
 - Use the ``Tools -> MD/Ensemble Analysis -> MD Movie`` in UCSF Chimera (select the `PDB frames contained in multiple files` option). It will open the frames that you select as a movie, so you can analyze the (un)binding process:
 
-.. image:: docs/tutorial_first/tutorial_first_img5.gif
+.. image:: data/tutorial_first/tutorial_first_img5.gif
 	:align: center
 	:alt: Unbinding_movie
 
