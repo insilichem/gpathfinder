@@ -63,11 +63,6 @@ or
 
 5 - Run it!
 
-.. image:: data/new.jpeg
-    :align: left
-    :height: 30px
-    :alt: NEW!
-
 ::
 
   gpath
