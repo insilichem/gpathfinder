@@ -12,6 +12,7 @@ dependencies:
 - cclib
 - numpy
 - git
+- smina
 - pip:
   - pychimera
   - munch
