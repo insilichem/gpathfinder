@@ -46,9 +46,29 @@ GPathFinder uses a YAML-formatted input file for setting up the calculation. YAM
 
 Normally, you can start from one of our standard input files, where Genetic Algorithm parameters have been set to appropiate values for a general case:
 
-- `input file to discover unbinding pathways with clashes evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes.yaml>`_
-- `input file to discover unbinding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina.yaml>`_
-- `input file to discover unbinding pathways with minimization of the receptor samples and clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina_minimize.yaml>`_
+.. csv-table::
+   :header: "Link", "Use", "Minimization of the receptor samples", "Clashes", "Vina", "Smina"
+   :widths: 15, 30, 25, 10, 10, 10
+
+   "`Input file 1 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes.yaml>`_", "Discover unbinding pathways", "No", "Yes", "No", "No"
+   "`Input file 2 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina.yaml>`_", "Discover unbinding pathways", "No", "Yes", "Yes", "No"
+   "`Input file 3 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_vina_minimize.yaml>`_", "Discover unbinding pathways", "Yes", "Yes", "Yes", "No"
+   "`Input file 4 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_smina.yaml>`_", "Discover unbinding pathways", "No", "Yes", "No", "Yes"
+   "`Input file 5 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/unbinding_clashes_smina_minimize.yaml>`_", "Discover unbinding pathways", "Yes", "Yes", "No", "Yes"
+   "`Input file 6 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes.yaml>`_", "Discover binding pathways", "No", "Yes", "No", "No"
+   "`Input file 7 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina.yaml>`_", "Discover binding pathways", "No", "Yes", "Yes", "No"
+   "`Input file 8 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina_minimize.yaml>`_", "Discover binding pathways", "Yes", "Yes", "Yes", "No"
+   "`Input file 9 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina.yaml>`_", "Discover binding pathways", "No", "Yes", "No", "Yes"
+   "`Input file 10 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina_minimize.yaml>`_", "Analyze a pathway (known starting and final points)", "Yes", "Yes", "No", "Yes"
+   "`Input file 11 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes.yaml>`_", "Analyze a pathway (known starting and final points)", "No", "Yes", "No", "No"
+   "`Input file 12 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina.yaml>`_", "Analyze a pathway (known starting and final points)", "No", "Yes", "Yes", "No"
+   "`Input file 13 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina_minimize.yaml>`_", "Analyze a pathway (known starting and final points)", "Yes", "Yes", "Yes", "No"
+   "`Input file 14 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_smina.yaml>`_", "Analyze a pathway (known starting and final points)", "No", "Yes", "No", "Yes"
+   "`Input file 15 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_smina_minimize.yaml>`_", "Analyze a pathway (known starting and final points)", "Yes", "Yes", "No", "Yes"
+ 
+
+
+
 - `input file to discover binding pathways with clashes evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes.yaml>`_
 - `input file to discover binding pathways with clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina.yaml>`_
 - `input file to discover binding pathways with minimization of the receptor samples and clashes+vina evaluation <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina_minimize.yaml>`_
