@@ -54,4 +54,4 @@ similarity:
     kwargs: {}
     module: gpath.path_similarity.pathways_rmsd
 
-# Input file to be used with GPathFinder v.1.0.1
+# Input file to be used with GPathFinder version >= 1.0.1

@@ -27,8 +27,6 @@ genes:      # Section to configure the genes
     n_samples: 100
     write_modes: True
     write_samples: True
-    minimize: True
-    #forcefields: [/path/to/protein.prmtop] #Should be used when non-standard residues are present
 -   module: gpath.genes.path
     name: Pathway
     ligand: Ligand
@@ -37,20 +35,21 @@ genes:      # Section to configure the genes
     rotamers_gene: R
     nm_gene: NM
     min_step_increment: 0.8
-    origin: [X.xxx, Y.yyy, Z.zzz]  #Coordinates of the initial point of the pathway object of study (referred to protein .mol2 file system of coordinates)
-    destination: [X.xxx, Y.yyy, Z.zzz]  #Coordinates of the final point of the pathway object of study (referred to protein .mol2 file system of coordinates)
 objectives:     # Section to configure the evaluation of the pathways
 -   module: gpath.objectives.path_scoring
     name: Clashes
     probe: Pathway
     which: clashes
-    method: average
+    method: max
     weight: -1.0
 -   module: gpath.objectives.path_scoring
-    name: Vina
+    name: Smina
     probe: Pathway
-    which: vina
-    method: average
+    which: smina
+    # smina_scoring: vinardo  #optional, used to select another built-in scoring from smina
+    # smina_custom_scoring: /path/to/custom/scoring/file #optional, used to introduce your custom scoring for smina
+    # smina_custom_atoms: /path/to/custom/atom/parameters/file #optional, used to introduce your custom atom parameters for smina
+    method: max
     weight: -1.0
 output:
     check_every: 0
@@ -64,4 +63,4 @@ similarity:
     kwargs: {}
     module: gpath.path_similarity.pathways_rmsd
 
-# Input file to be used with GPathFinder version >= 1.0.1
+# Input file to be used with GPathFinder version >= 1.1.0
