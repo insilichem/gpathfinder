@@ -44,7 +44,11 @@ GPathFinder uses a YAML-formatted input file for setting up the calculation. YAM
 - **genes**. List of descriptors used to define an individual
 - **objectives**. The list of functions that will evaluate your individuals.
 
-Normally, you can start from one of our standard input files, where Genetic Algorithm parameters have been set to appropiate values for a general case:
+Normally, you can start from one of our standard input files, where Genetic Algorithm parameters have been set to appropiate values for a general case. You should choose the input file depending on the following:
+
+- What kind of experiment you want to perform: discover (un)binding pathways or analyze a known pathway (initial and final points given in advance).
+- If you want to minimize the receptor samples before starting the actual calculation or not.
+- What method you will use to evaluate the solutions (clashes, vina, smina).
 
 .. csv-table::
    :header: "Link", "Use", "Minimization", "Clashes", "Vina", "Smina"
@@ -59,12 +63,12 @@ Normally, you can start from one of our standard input files, where Genetic Algo
    "`Input file 7 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina.yaml>`_", "Discover binding pathways", "No", "Yes", "Yes", "No"
    "`Input file 8 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina_minimize.yaml>`_", "Discover binding pathways", "Yes", "Yes", "Yes", "No"
    "`Input file 9 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina.yaml>`_", "Discover binding pathways", "No", "Yes", "No", "Yes"
-   "`Input file 10 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina_minimize.yaml>`_", "Analyze a pathway (known initial and final points)", "Yes", "Yes", "No", "Yes"
-   "`Input file 11 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes.yaml>`_", "Analyze a pathway (known initial and final points)", "No", "Yes", "No", "No"
-   "`Input file 12 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina.yaml>`_", "Analyze a pathway (known initial and final points)", "No", "Yes", "Yes", "No"
-   "`Input file 13 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina_minimize.yaml>`_", "Analyze a pathway (known initial and final points)", "Yes", "Yes", "Yes", "No"
-   "`Input file 14 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_smina.yaml>`_", "Analyze a pathway (known initial and final points)", "No", "Yes", "No", "Yes"
-   "`Input file 15 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_smina_minimize.yaml>`_", "Analyze a pathway (known initial and final points)", "Yes", "Yes", "No", "Yes"
+   "`Input file 10 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina_minimize.yaml>`_", "Analyze a known pathway", "Yes", "Yes", "No", "Yes"
+   "`Input file 11 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes.yaml>`_", "Analyze a known pathway", "No", "Yes", "No", "No"
+   "`Input file 12 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina.yaml>`_", "Analyze a known pathway", "No", "Yes", "Yes", "No"
+   "`Input file 13 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina_minimize.yaml>`_", "Analyze a known pathway", "Yes", "Yes", "Yes", "No"
+   "`Input file 14 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_smina.yaml>`_", "Analyze a known pathway", "No", "Yes", "No", "Yes"
+   "`Input file 15 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_smina_minimize.yaml>`_", "Analyze a known pathway", "Yes", "Yes", "No", "Yes"
  
 If you want to deepen the knowledge of the different parameters and fine-tune the input file, you can follow the tutorial :ref:`tutorial-input`
 
