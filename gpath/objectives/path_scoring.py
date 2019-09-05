@@ -70,7 +70,7 @@ import Matrix as M
 
 # GPATH
 from gpath import parse
-from gpath.objectives import ObjectiveProvider, path_vina
+from gpath.objectives import ObjectiveProvider, path_vina, path_smina
 
 logger = logging.getLogger(__name__)
 _openmm_builtin_forcefields = os.listdir(os.path.join(openmm_app.__path__[0], 'data'))
@@ -95,7 +95,7 @@ class PathScoring(ObjectiveProvider):
     radius : float, optional, defaults to 5.0
         Maximum distance from any point of the ligand in every frame 
         that is searched for possible interactions.
-    which : {'clashes', 'vina', 'smoothness'}, 
+    which : {'clashes', 'vina', 'smina', 'smoothness'}, 
             optional, defaults to 'clashes'
         Type of interactions to measure.
     method : {'sum', 'average', 'max'}, optional, defaults to 'sum'
@@ -111,9 +111,18 @@ class PathScoring(ObjectiveProvider):
         Used when ``which`` is ``clashes``. Include intra-residue 
         clashes. 
     smoothness_threshold : float, optional, defaults to 0.0
-        Used when method is ``smoothness``. RMSD between ligands on two
+        Used when ``which`` is ``smoothness``. RMSD between ligands on two
         consecutive frames that is permitted considering a perfect score
         of smoothness. 
+    smina_scoring : str, optional
+        Used when ``which`` is ``smina`` to specify alternative builtin 
+        scoring function (e.g. vinardo). Defaults to None
+    smina_custom_scoring : str, optional
+        Used when ``which`` is ``smina`` to specify a custom scoring function
+        file. Defaults to None
+    smina_custom_atoms : str, optional
+        Used when ``which`` is ``smina`` to specify a custom atom type
+        parameters file. Defaults to None
 
     Returns
     -------
@@ -122,6 +131,7 @@ class PathScoring(ObjectiveProvider):
         - Volumetric overlap of VdW spheres in A³ if ``which``=
         ``clashes``.
         - Vina score if ``which``=``vina``.
+        - Smina score if ``which``=``smina``.
         - RMSD if ``which``=``smoothness``.
     """
     _validate = {
@@ -129,18 +139,23 @@ class PathScoring(ObjectiveProvider):
         'ligand': parse.Molecule_name,
         'protein': parse.Molecule_name,
         'radius': parse.All(parse.Coerce(float), parse.Range(min=0)),
-        'which': parse.In(['clashes', 'vina', 'smoothness']),
+        'which': parse.In(['clashes', 'vina', 'smina', 'smoothness']),
         'method': parse.In(['sum', 'average', 'max']),
         'clash_threshold': parse.Coerce(float),
         'bond_separation': parse.All(parse.Coerce(int), parse.Range(min=2)),
         'same_residue': parse.Coerce(bool),
-        'smoothness_threshold': float
+        'smoothness_threshold': float,
+        'smina_scoring': str,
+        'smina_custom_scoring': parse.RelPathToInputFile(),
+        'smina_custom_atoms': parse.RelPathToInputFile(),
         }
 
     def __init__(self, probe, ligand='Ligand', protein='Protein', radius=5.0, 
                  which='clashes', method='average', clash_threshold=0.6, 
                  bond_separation=4, same_residue=True,
-                 smoothness_threshold=0.0, *args, **kwargs):
+                 smoothness_threshold=0.0, smina_scoring=None,
+                 smina_custom_scoring=None, smina_custom_atoms=None,
+                 *args, **kwargs):
         ObjectiveProvider.__init__(self, **kwargs)
         self._probe = probe
         self._ligand = ligand
@@ -151,6 +166,9 @@ class PathScoring(ObjectiveProvider):
         self.clash_threshold = clash_threshold
         self.bond_separation = bond_separation
         self.same_residue = same_residue
+        self.smina_scoring = smina_scoring
+        self.smina_custom_scoring = smina_custom_scoring
+        self.smina_custom_atoms = smina_custom_atoms
 
         if which == 'clashes':
             self.evaluate = self.evaluate_clashes
@@ -159,6 +177,12 @@ class PathScoring(ObjectiveProvider):
             self.vina_scorer = path_vina.Vina(self._protein, self._ligand, 
                                 prepare_each=False)
             self.evaluate = self.evaluate_vina
+        elif which == 'smina':
+            self.smina_scorer = path_smina.Smina(self._protein, self._ligand,
+                                scoring=self.smina_scoring,
+                                custom_scoring=self.smina_custom_scoring,
+                                custom_atoms=self.smina_custom_atoms)
+            self.evaluate = self.evaluate_smina
         elif which == 'smoothness':
             self.evaluate = self.evaluate_smoothness
             self.threshold = smoothness_threshold
@@ -244,6 +268,36 @@ class PathScoring(ObjectiveProvider):
             return vinascore / len(ind.genes[self._probe].allele['positions'])
         elif self.method == 'max':
             sc = [score['vina'] for score in scores[1:]]
+            return max(sc)
+
+    def evaluate_smina(self, ind):
+        """
+        Calculate smina score for all the frames that have changed (not 'smina' 
+        key present in scores). It sums the smina scores of every frame to 
+        return a global score for all the pathway.
+        """
+        scores = ind.genes[self._probe].scores
+
+        sminascore = 0.0
+        for i in range(0, len(ind.genes[self._probe].allele['positions'])):
+            if not 'smina' in scores[i].keys():
+                ind.genes[self._probe].gp_express(i)
+
+                smina_point = self.smina_scorer.evaluate(ind)
+                scores[i]['smina'] = smina_point
+                if self.method == 'sum' or self.method == 'average':
+                    sminascore += smina_point
+            
+                ind.genes[self._probe].gp_unexpress(i)
+            else:
+                if self.method == 'sum' or self.method == 'average':
+                    sminascore += scores[i]['smina']
+        if self.method == 'sum':
+            return sminascore
+        elif self.method == 'average':
+            return sminascore / len(ind.genes[self._probe].allele['positions'])
+        elif self.method == 'max':
+            sc = [score['smina'] for score in scores[1:]]
             return max(sc)
 
     def evaluate_smoothness(self, ind):

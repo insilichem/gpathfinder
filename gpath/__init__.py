@@ -63,4 +63,4 @@ __url__ = 'https://github.com/insilichem/gpathfinder'
 __title__ = 'GPathFinder'
 __description__ = ('Identification of ligand binding pathways \
                     by a multi-objective genetic algorithm')
-__version__ = '1.0.1'
+__version__ = '1.1.0'

@@ -68,6 +68,13 @@ Features
 
 - Steric clashes
 - Vina scoring function
+
+.. image:: docs/data/new.jpeg 
+   :align: left 
+   :height: 30px 
+   :alt: NEW!
+
+- Smina, with the possibility to customize the scoring function and use custom atom parameters
 - Smoothness of the ligand movements
  
 Documentation and support
@@ -88,6 +95,9 @@ GPathFinder and GaudiMM are licensed under the Apache License, Version 2.0. Chec
 
 History of versions
 -------------------
+
+- **v1.1.0:** 6th September 2019
+New ``smina`` scoring. Possibility of using its built-in scoring functions or making a custom file with your own one. Also allows to introduce your custom atom parameters file.
 
 - **v1.0.1:** 25th July 2019
 New ``summary.csv`` file in the output with score data of all the solutions.
