@@ -98,14 +98,14 @@ You have to make the following changes/adjustements in your template file:
 
    To ensure that torsions of the dihedral angles in the ligand molecule are modified in a proper manner, we recommend to choose an **anchor atom** near the geometric center of the ligand. You have to indicate the name of the ligand gene and the Chimera serial number of the atom, in this case ``Ligand/3``. To know the serial number, you can open in text mode the `.mol2` file, or, visualize the property inside Chimera: select the atom and, then, show its serial number with ``Actions -> Label -> Other -> Label with attribute: serialNumber``.
 
+.. image:: data/tutorial_first/tutorial_first_img3.png
+    :align: center
+    :alt: Save_ligand_protein
+
 **output section**
 
 - ``name: 2ace`` (choose a name for your calculation)
 - ``path: ./results_2ace`` (folder where the results of the calculation will be saved)
-
-.. image:: data/tutorial_first/tutorial_first_img3.png
-    :align: center
-    :alt: Save_ligand_protein
 
 Finally, you have to save your `.yaml` inside your calculation folder, for example `first_calculation`.
 
