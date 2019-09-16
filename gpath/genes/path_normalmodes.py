@@ -152,7 +152,8 @@ class NormalModes(GeneProvider):
         'write_modes': bool,
         'write_samples': bool,
         parse.Required('target'): parse.Molecule_name,
-        'group_by': parse.In(['residues', 'mass', 'calpha', 'backbone','all']),
+        'pca_atoms': parse.In(['calpha', 'backbone','all']),
+        'group_by': parse.In(['residues', 'mass', 'calpha']),
         'group_lambda': parse.All(parse.Coerce(int), parse.Range(min=1)),
         'modes': [parse.All(parse.Coerce(int), parse.Range(min=0))],
         'n_samples': parse.All(parse.Coerce(int), parse.Range(min=1)),
@@ -169,7 +170,7 @@ class NormalModes(GeneProvider):
     }
 
     def __init__(self, method='prody', target=None, modes=None, trajectory=None, n_samples=100, rmsd=2.0,
-                 group_by='calpha', group_lambda=None, samples_path=None,
+                 pca_atoms ='calpha',group_by='residues', group_lambda=None, samples_path=None,
                  path=None, write_modes=False, write_samples=False,
                  minimize=False, minimization_tolerance=10, minimization_iterations=1000,
                  forcefields=('amber99sbildn.xml',), auto_parametrize=None,
@@ -211,8 +212,7 @@ class NormalModes(GeneProvider):
         elif method == 'pca':
             if path is None:
                 self.normal_modes_function = self.calculate_pca_normal_modes #creo una nova funcio per fer el PCA
-                self.group_by = group_by
-                self.group_by_options = {} if group_lambda is None else {'n': group_lambda}
+                self.pca_atoms = pca_atoms
             else:
                 self.path = path
                 self.normal_modes_function = self.read_prody_normal_modes
@@ -372,8 +372,7 @@ class NormalModes(GeneProvider):
 
         prody_molecule, chimera2prody = convert_chimera_molecule_to_prody(self.molecule) #diccionari prody-chimer
 
-        modes = pca_modes(prody_molecule, self.trajectory, self.max_modes, self.group_by,
-                                        **self.group_by_options) #ens porta a funcio de pca
+        modes = pca_modes(prody_molecule, self.trajectory, self.max_modes, self.pca_atoms) #ens porta a funcio de pca
         samples = prody.sampleModes(modes=modes[self.modes], atoms=prody_molecule, 
                                    n_confs=self.n_samples, rmsd=self.rmsd) 
         samples.addCoordset(prody_molecule)
@@ -451,10 +450,10 @@ def prody_modes(molecule, max_modes, algorithm=None, **options):
         modes.calcModes(n_modes=max_modes)
     return modes
 
-def pca_modes(molecule, trajectory, max_modes, algorithm=None, **options):
+def pca_modes(molecule, trajectory, max_modes, pca_atoms):
     modes = None
     traj = prody.parseDCD(trajectory) #aquesta variable correspon a l'arxiu trajectoria (.dcd)
-    if algorithm == "calpha":
+    if pca_atoms == "calpha":
         traj.setAtoms(molecule.calpha) 
         traj.setCoords(molecule)
         traj.superpose()
@@ -462,7 +461,7 @@ def pca_modes(molecule, trajectory, max_modes, algorithm=None, **options):
         pca.buildCovariance(traj)
         pca.calcModes(n_modes=max_modes)
         modes = prody.extendModel(pca, molecule.calpha, molecule, norm=True)[0]
-    elif algorithm == "backbone":
+    elif pca_atoms == "backbone":
         traj.setAtoms(molecule.backbone) 
         traj.setCoords(molecule)
         traj.superpose()
