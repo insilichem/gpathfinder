@@ -68,12 +68,6 @@ Features
 
 - Steric clashes
 - Vina scoring function
-
-.. image:: docs/data/new.jpeg 
-   :align: left 
-   :height: 30px 
-   :alt: NEW!
-
 - Smina, with the possibility to customize the scoring function and use custom atom parameters
 - Smoothness of the ligand movements
  
