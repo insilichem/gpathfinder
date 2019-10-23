@@ -63,7 +63,7 @@ Normally, you can start from one of our standard input files, where Genetic Algo
    "`Input file 7 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina.yaml>`_", "Discover binding pathways", "No", "Yes", "Yes", "No"
    "`Input file 8 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_vina_minimize.yaml>`_", "Discover binding pathways", "Yes", "Yes", "Yes", "No"
    "`Input file 9 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina.yaml>`_", "Discover binding pathways", "No", "Yes", "No", "Yes"
-   "`Input file 10 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina_minimize.yaml>`_", "Analyze a known pathway", "Yes", "Yes", "No", "Yes"
+   "`Input file 10 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/binding_clashes_smina_minimize.yaml>`_", "Discover binding pathways", "Yes", "Yes", "No", "Yes"
    "`Input file 11 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes.yaml>`_", "Analyze a known pathway", "No", "Yes", "No", "No"
    "`Input file 12 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina.yaml>`_", "Analyze a known pathway", "No", "Yes", "Yes", "No"
    "`Input file 13 <https://raw.githubusercontent.com/insilichem/gpathfinder/master/examples/input_files/analyze_clashes_vina_minimize.yaml>`_", "Analyze a known pathway", "Yes", "Yes", "Yes", "No"
