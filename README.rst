@@ -69,7 +69,7 @@ Features
    :height: 30px 
    :alt: NEW!
 
-- Global movements extracted from a PCA analysis over a MD trajectory
+- Global movements extracted from a PCA analysis over a MD trajectory (.dcd file)
 
 **Different options for evalute and optimize the solutions**
 
