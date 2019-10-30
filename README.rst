@@ -64,10 +64,10 @@ Features
 - Side-chain flexibility using rotamer libraries
 - Global movements by Normal Mode Analysis sampling
 
-.. image:: data/new.jpeg 
-:align: left 
-:height: 30px 
-:alt: NEW!
+.. image:: docs/data/new.jpeg 
+   :align: left 
+   :height: 30px 
+   :alt: NEW!
 
 - Global movements extracted from a PCA analysis over a MD trajectory
 
@@ -97,10 +97,10 @@ GPathFinder and GaudiMM are licensed under the Apache License, Version 2.0. Chec
 History of versions
 -------------------
 
-.. image:: data/new.jpeg 
-:align: left 
-:height: 30px 
-:alt: NEW!
+.. image:: docs/data/new.jpeg 
+   :align: left 
+   :height: 30px 
+   :alt: NEW!
 
 - **v1.2.0:** 30th October 2019
 New ``PCA analysis`` functionality. If you have a trajectory file of a molecular dynamics, you can now include low energy motions calculated throughout PCA analysis. GPathFinder would include those movements in its calculations.
