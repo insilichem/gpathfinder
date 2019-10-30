@@ -63,7 +63,7 @@ Parameters for version 1.2.0
 
 **Path_normalmodes gene**
 
-- **method** {'prody', 'gaussian', 'pca'}: `prody` to calculate normal modes using prody algorithms, `gaussian` to read normal modes from a gaussian output file and `pca` to perform a PCA analysis over a MD trajectory. **Default: prody**
+- **method** {'prody', 'gaussian', 'pca'}: `prody` to calculate normal modes using prody algorithms, `gaussian` to read normal modes from a gaussian output file and `pca` to perform a PCA analysis over a MD trajectory (.dcd file). **Default: prody**
 - **modes** (list of int): Modes to be used to move the molecule. **Default: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]**
 - **pca_atoms** {'calpha', 'backbone', 'all'}: which atoms of the receptor are selected in the PCA analysis. **Default: calpha**
 - **group_by** {'residues', 'mass', 'calpha', ''}: method to group atoms when using a coarse grain model of the receptor. **Default: residues**
