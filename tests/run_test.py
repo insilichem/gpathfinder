@@ -31,4 +31,4 @@ from pychimera import patch_environ, enable_chimera
 if __name__ == '__main__':
     patch_environ()
     enable_chimera()
-    sys.exit(pytest.main(sys.argv[1:]))
+    #sys.exit(pytest.main(sys.argv[1:]))
