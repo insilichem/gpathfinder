@@ -769,8 +769,7 @@ class Pathway(GeneProvider):
                     prev_res = 0
                     last_change_res = 0
                     for line in pdb_file_lines:
-                        l_split = line.split()
-                        current_atom, current_res = int(l_split[1]), int(l_split[5])
+                        current_atom, current_res = int(line[6:11]), int(line[22:26])
                         if current_atom > prev_atom:
                             prev_atom = current_atom
                         else:
@@ -785,7 +784,7 @@ class Pathway(GeneProvider):
                             current_res = prev_res
                         else:
                             current_res = prev_res
-                        line = line[:7] + '{:4d}'.format(current_atom) + line[11:23] + '{:3d}'.format(current_res) + line[26:]
+                        line = line[:6] + '{:5d}'.format(current_atom) + line[11:22] + '{:4d}'.format(current_res) + line[26:]
                         f.write("%s" % line)  
                     
                 z.write(framename, os.path.basename(framename))
