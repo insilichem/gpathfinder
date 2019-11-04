@@ -70,7 +70,7 @@ import Matrix as M
 
 # GPATH
 from gpath import parse
-from gpath.objectives import ObjectiveProvider, path_vina, path_smina, path_metal
+from gpath.objectives import ObjectiveProvider, path_vina, path_smina
 
 logger = logging.getLogger(__name__)
 _openmm_builtin_forcefields = os.listdir(os.path.join(openmm_app.__path__[0], 'data'))
@@ -95,7 +95,7 @@ class PathScoring(ObjectiveProvider):
     radius : float, optional, defaults to 5.0
         Maximum distance from any point of the ligand in every frame 
         that is searched for possible interactions.
-    which : {'clashes', 'vina', 'smina', 'metal_sites', 'smoothness'}, 
+    which : {'clashes', 'vina', 'smina', 'smoothness'}, 
             optional, defaults to 'clashes'
         Type of interactions to measure.
     method : {'sum', 'average', 'max'}, optional, defaults to 'sum'
@@ -114,17 +114,6 @@ class PathScoring(ObjectiveProvider):
         Used when ``which`` is ``smoothness``. RMSD between ligands on two
         consecutive frames that is permitted considering a perfect score
         of smoothness. 
-    metal_atoms : list of Molecule/atom_serial_number, optional
-        Mandatory  when ``which`` is ``metal_sites`` to indicate the list 
-        of atoms of the Ligand molecule that will be considered as metals in
-        order to search possible coordinating sites in the receptor.
-    metal_residues : list of str, optional, defaults to [ARG,ASN,ASP,CYS,GLN,GLU,HIS,MET,SER,THR,TYR]
-        Used when ``which`` is ``metal_sites`` to indicate the list of 
-        residues that can act as coordinating residues (named by 3-letter
-        aminoacid code).
-    metal backbone : bool, optional, defaults to False
-        Used when ``which`` is ``metal_sites`` to indicate that also 
-        possible coordination with backbone atoms will be taken into account.
     smina_scoring : str, optional
         Used when ``which`` is ``smina`` to specify alternative builtin 
         scoring function (e.g. vinardo). Defaults to None
@@ -143,7 +132,6 @@ class PathScoring(ObjectiveProvider):
         ``clashes``.
         - Vina score if ``which``=``vina``.
         - Smina score if ``which``=``smina``.
-        - Metal binding score if ``which``=``metal_sites``.
         - RMSD if ``which``=``smoothness``.
     """
     _validate = {
@@ -151,15 +139,12 @@ class PathScoring(ObjectiveProvider):
         'ligand': parse.Molecule_name,
         'protein': parse.Molecule_name,
         'radius': parse.All(parse.Coerce(float), parse.Range(min=0)),
-        'which': parse.In(['clashes', 'vina', 'smina', 'metal_sites', 'smoothness']),
+        'which': parse.In(['clashes', 'vina', 'smina', 'smoothness']),
         'method': parse.In(['sum', 'average', 'max']),
         'clash_threshold': parse.Coerce(float),
         'bond_separation': parse.All(parse.Coerce(int), parse.Range(min=2)),
         'same_residue': parse.Coerce(bool),
         'smoothness_threshold': float,
-        'metal_atoms' : [parse.All(parse.Named_spec("molecule", "atom"))],
-        'metal_residues' : parse.All(parse.Coerce(str)),
-        'metal_backbone' : parse.Coerce(bool),
         'smina_scoring': str,
         'smina_custom_scoring': parse.RelPathToInputFile(),
         'smina_custom_atoms': parse.RelPathToInputFile(),
@@ -168,9 +153,7 @@ class PathScoring(ObjectiveProvider):
     def __init__(self, probe, ligand='Ligand', protein='Protein', radius=5.0, 
                  which='clashes', method='average', clash_threshold=0.6, 
                  bond_separation=4, same_residue=True,
-                 smoothness_threshold=0.0, metal_atoms=None,
-                 metal_residues=['ARG', 'ASN', 'ASP', 'CYS', 'GLN', 'GLU', 'HIS', 'MET', 'SER', 'THR', 'TYR'],
-                 metal_backbone=False, smina_scoring=None,
+                 smoothness_threshold=0.0, smina_scoring=None,
                  smina_custom_scoring=None, smina_custom_atoms=None,
                  *args, **kwargs):
         ObjectiveProvider.__init__(self, **kwargs)
@@ -183,9 +166,6 @@ class PathScoring(ObjectiveProvider):
         self.clash_threshold = clash_threshold
         self.bond_separation = bond_separation
         self.same_residue = same_residue
-        self.metal_atoms = metal_atoms
-        self.metal_residues = metal_residues
-        self.metal_backbone = metal_backbone
         self.smina_scoring = smina_scoring
         self.smina_custom_scoring = smina_custom_scoring
         self.smina_custom_atoms = smina_custom_atoms
@@ -203,11 +183,6 @@ class PathScoring(ObjectiveProvider):
                                 custom_scoring=self.smina_custom_scoring,
                                 custom_atoms=self.smina_custom_atoms)
             self.evaluate = self.evaluate_smina
-        elif which == 'metal_sites':
-            self.metal_scorer = path_metal.Metal(self._protein, self._ligand, 
-            						self.metal_atoms, residues=self.metal_residues,
-            						backbone=self.metal_backbone)
-            self.evaluate = self.evaluate_metal
         elif which == 'smoothness':
             self.evaluate = self.evaluate_smoothness
             self.threshold = smoothness_threshold
@@ -323,36 +298,6 @@ class PathScoring(ObjectiveProvider):
             return sminascore / len(ind.genes[self._probe].allele['positions'])
         elif self.method == 'max':
             sc = [score['smina'] for score in scores[1:]]
-            return max(sc)
-
-    def evaluate_metal(self, ind):
-        """
-        Calculate metal binding score for all the frames that have changed 
-        (not 'metal' key present in scores). It sums the metal binding scores 
-        of every frame to return a global score for all the pathway.
-        """
-        scores = ind.genes[self._probe].scores
-
-        metalscore = 0.0
-        for i in range(0, len(ind.genes[self._probe].allele['positions'])):
-            if not 'metal' in scores[i].keys():
-                ind.genes[self._probe].gp_express(i)
-
-                metal_point = self.metal_scorer.evaluate(ind)
-                scores[i]['metal'] = metal_point
-                if self.method == 'sum' or self.method == 'average':
-                    metalscore += metal_point
-            
-                ind.genes[self._probe].gp_unexpress(i)
-            else:
-                if self.method == 'sum' or self.method == 'average':
-                    metalscore += scores[i]['metal']
-        if self.method == 'sum':
-            return metalscore
-        elif self.method == 'average':
-            return metalscore / len(ind.genes[self._probe].allele['positions'])
-        elif self.method == 'max':
-            sc = [score['metal'] for score in scores[1:]]
             return max(sc)
 
     def evaluate_smoothness(self, ind):
