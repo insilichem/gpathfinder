@@ -191,7 +191,7 @@ class Metal(ObjectiveProvider):
 
         atoms_to_consider = self._create_dict_atoms(possible_atoms)
         
-        good_probes = 0
+        good_probes = ()
 
         for probe in self.probes: # METALS TO CONSIDER
             probe_coords = probe.xformCoord()
@@ -200,19 +200,19 @@ class Metal(ObjectiveProvider):
                 try:
                     dist_oxygen = atoms_to_consider[res]['oxygen'].xformCoord().distance(probe_coords)
                     if dist_oxygen < 1.0:
-                        good_probes = 0
+                        good_probes = ()
                         break
                     dist_carbon = atoms_to_consider[res]['carbon'].xformCoord().distance(probe_coords)
                     if dist_carbon < 1.0:
-                        good_probes = 0
+                        good_probes = ()
                         break
                     dist_nitrogen = atoms_to_consider[res]['nitrogen'].xformCoord().distance(probe_coords)
                     if dist_nitrogen < 1.0:
-                        good_probes = 0
+                        good_probes = ()
                         break
                     dist_alpha = atoms_to_consider[res]['alpha'].xformCoord().distance(probe_coords)
                     if dist_alpha < 1.0:
-                        good_probes = 0
+                        good_probes = ()
                         break
                 except:
                     pass
@@ -235,7 +235,7 @@ class Metal(ObjectiveProvider):
                                 dist_alpha_beta = atoms_to_consider[res]['alpha'].xformCoord().distance(atoms_to_consider[res]['beta'].xformCoord())
                                 angle_PAB = math.acos((dist_alpha ** 2 + dist_alpha_beta ** 2 - dist_beta ** 2)/(2*dist_alpha*dist_alpha_beta))
                                 if (ANGLE_PAB[res_name][0] <= angle_PAB <= ANGLE_PAB[res_name][1]):  
-                                    good_probes += 1
+                                    good_probes = good_probes + (res.id.position,)
                 except:
                     continue
 
@@ -246,10 +246,10 @@ class Metal(ObjectiveProvider):
                             dist_oxygen_carbon = atoms_to_consider[res]['oxygen'].xformCoord().distance(atoms_to_consider[res]['carbon'].xformCoord())
                             angle_POC = math.acos((dist_oxygen ** 2 + dist_oxygen_carbon ** 2 - dist_carbon ** 2)/(2*dist_oxygen*dist_oxygen_carbon))
                             if ANGLE_POC[0] <= angle_POC <= ANGLE_POC[1]:
-                                good_probes += 1
+                                good_probes = good_probes + (res.id.position,)
                     except:
                         continue
-        return good_probes
+        return len(good_probes), good_probes
 
     def _surrounding_atoms(self, ind):
         """

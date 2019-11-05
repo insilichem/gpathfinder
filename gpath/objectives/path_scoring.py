@@ -338,8 +338,9 @@ class PathScoring(ObjectiveProvider):
             if not 'metal' in scores[i].keys():
                 ind.genes[self._probe].gp_express(i)
 
-                metal_point = self.metal_scorer.evaluate(ind)
+                metal_point, coord_residues = self.metal_scorer.evaluate(ind)
                 scores[i]['metal'] = metal_point
+                ind.genes[self._probe].allele['coord_residues'][i] = coord_residues
                 if self.method == 'sum' or self.method == 'average':
                     metalscore += metal_point
             
