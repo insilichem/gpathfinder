@@ -299,6 +299,7 @@ class Pathway(GeneProvider):
             self.allele['rotamers'] = [ [[],[],[]] ]
         if self.nm_gene:
             self.allele['normal_modes'] = [None]
+        self.allele['coord_residues'] = [[]] #To store possible coord residues when evaluating metal_sites
         self.allele['mate_torsions'] = 0  #To register if mate is being useful
         self.allele['mate_positions'] = 0 #To register if mate is being useful
         self.allele['mate_rotations'] = 0 #To register if mate is being useful
@@ -333,6 +334,7 @@ class Pathway(GeneProvider):
                                     self.parent.genes[self.nm_gene].n_samples))
                 if self.rotamers_gene:
                     self.allele['rotamers'].append([[],[],[]])
+                self.allele['coord_residues'].append([])
                 self.scores.append({})
                 last_point = [x[3] for x in self.allele['positions'][-1]]
             if self.destination:
@@ -549,6 +551,7 @@ class Pathway(GeneProvider):
                     self.allele['rotamers'] = self.allele['rotamers'][:i]
                 if self.nm_gene:
                     self.allele['normal_modes'] = self.allele['normal_modes'][:i]
+                self.allele['coord_residues'] = self.allele['coord_residues'][:i]
                 self.scores = self.scores[:i]
                 #Generate new frames
                 last_point = [x[3] for x in self.allele['positions'][-1]]
@@ -574,6 +577,7 @@ class Pathway(GeneProvider):
                                             self.parent.genes[self.nm_gene].n_samples))
                         if self.rotamers_gene:
                             self.allele['rotamers'].append([[],[],[]])
+                        self.allele['coord_residues'].append([])
                         self.scores.append({})
                         last_point = [x[3] for x in self.allele['positions'][-1]]
                     if self.destination:
