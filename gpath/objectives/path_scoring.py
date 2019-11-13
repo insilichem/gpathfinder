@@ -95,7 +95,7 @@ class PathScoring(ObjectiveProvider):
     radius : float, optional, defaults to 5.0
         Maximum distance from any point of the ligand in every frame 
         that is searched for possible interactions.
-    which : {'clashes', 'vina', 'smina', 'metal_sites', 'smoothness'}, 
+    which : {'clashes', 'vina', 'smina', 'metal_sites', 'coordination', 'smoothness'}, 
             optional, defaults to 'clashes'
         Type of interactions to measure.
     method : {'sum', 'average', 'max'}, optional, defaults to 'sum'
@@ -144,6 +144,7 @@ class PathScoring(ObjectiveProvider):
         - Vina score if ``which``=``vina``.
         - Smina score if ``which``=``smina``.
         - Metal binding score if ``which``=``metal_sites``.
+        - Coordination score if ``which``=``coordination``.
         - RMSD if ``which``=``smoothness``.
     """
     _validate = {
@@ -151,7 +152,7 @@ class PathScoring(ObjectiveProvider):
         'ligand': parse.Molecule_name,
         'protein': parse.Molecule_name,
         'radius': parse.All(parse.Coerce(float), parse.Range(min=0)),
-        'which': parse.In(['clashes', 'vina', 'smina', 'metal_sites', 'smoothness']),
+        'which': parse.In(['clashes', 'vina', 'smina', 'metal_sites', 'coordination', 'smoothness']),
         'method': parse.In(['sum', 'average', 'max']),
         'clash_threshold': parse.Coerce(float),
         'bond_separation': parse.All(parse.Coerce(int), parse.Range(min=2)),
@@ -205,9 +206,14 @@ class PathScoring(ObjectiveProvider):
             self.evaluate = self.evaluate_smina
         elif which == 'metal_sites':
             self.metal_scorer = path_metal.Metal(self._protein, self._ligand, 
-            						self.metal_atoms, residues=self.metal_residues,
-            						backbone=self.metal_backbone)
+                                    self.metal_atoms, residues=self.metal_residues,
+                                    backbone=self.metal_backbone)
             self.evaluate = self.evaluate_metal
+        elif which == 'coordination':
+            self.coordination_scorer = path_coordination.Coordination(self._protein, self._ligand, 
+                                    self.metal_atoms, residues=self.metal_residues,
+                                    backbone=self.metal_backbone)
+            self.evaluate = self.evaluate_coordination
         elif which == 'smoothness':
             self.evaluate = self.evaluate_smoothness
             self.threshold = smoothness_threshold
@@ -354,6 +360,36 @@ class PathScoring(ObjectiveProvider):
             return metalscore / len(ind.genes[self._probe].allele['positions'])
         elif self.method == 'max':
             sc = [score['metal'] for score in scores[1:]]
+            return max(sc)
+
+    def evaluate_coordination(self, ind):
+        """
+        Calculate coordination score for all the frames that have changed 
+        (not 'coord' key present in scores). It sums the coordination scores 
+        of every frame to return a global score for all the pathway.
+        """
+        scores = ind.genes[self._probe].scores
+
+        coordscore = 0.0
+        for i in range(0, len(ind.genes[self._probe].allele['positions'])):
+            if not 'coord' in scores[i].keys():
+                ind.genes[self._probe].gp_express(i)
+
+                coord_point = self.coordination_scorer.evaluate(ind)
+                scores[i]['coord'] = coord_point
+                if self.method == 'sum' or self.method == 'average':
+                    coordscore += coord_point
+            
+                ind.genes[self._probe].gp_unexpress(i)
+            else:
+                if self.method == 'sum' or self.method == 'average':
+                    coordscore += scores[i]['coord']
+        if self.method == 'sum':
+            return coordscore
+        elif self.method == 'average':
+            return coordscore / len(ind.genes[self._probe].allele['positions'])
+        elif self.method == 'max':
+            sc = [score['coord'] for score in scores[1:]]
             return max(sc)
 
     def evaluate_smoothness(self, ind):
