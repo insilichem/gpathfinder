@@ -76,7 +76,8 @@ class NormalModes(GeneProvider):
     modes : list, optional, default=range(20)
         Modes to be used to move the molecule
     pca_atoms_selection: str, optional
-        selection of atom to perform pca (using prody language)
+        selection of atom to perform pca (using prody language) IMPORTANT:
+        number of residues should start from 0. Residue name can also be used. 
     group_by : str or callable, optional, default=None
         group_by_*: algorithm name or callable
         coarseGrain(prm) which makes ``mol.select().setBetas(i)``,
