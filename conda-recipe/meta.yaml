@@ -42,7 +42,7 @@ requirements:
     - smina 2017.11.*
     # InsiliChem channel
     - autodocktools-prepare 1.5.7.*
-    - prody 1.8.*
+    - prody 1.10.*
 
 test:
   imports:
