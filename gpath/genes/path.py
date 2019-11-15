@@ -283,6 +283,8 @@ class Pathway(GeneProvider):
             self._op_roulette.append('rotamers')
         if self.nm_gene:
             self._op_roulette.append('nm')
+        if len(self.protein_g.catalog) > 1:
+            self._op_roulette.append('protein')
 
         #Making the initial allele
         self.allele = {}
@@ -299,6 +301,7 @@ class Pathway(GeneProvider):
             self.allele['rotamers'] = [ [[],[],[]] ]
         if self.nm_gene:
             self.allele['normal_modes'] = [None]
+        self.allele['protein'] = [0]
         self.allele['coord_residues'] = [[]] #To store possible coord residues when evaluating metal_sites
         self.allele['mate_torsions'] = 0  #To register if mate is being useful
         self.allele['mate_positions'] = 0 #To register if mate is being useful
@@ -308,6 +311,7 @@ class Pathway(GeneProvider):
         self.allele['mutate_rotations'] = 0 #To register if mutate is being useful
         self.allele['mutate_rotamers'] = 0 #To register if mutate is being useful
         self.allele['mutate_nm'] = 0 #To register if mutate is being useful
+        self.allele['mutate_protein'] = 0 #To register if mutate is being useful
         self.scores = [{}] #To store scores at the evaluation stage
 
         #Initial pathway
@@ -332,6 +336,7 @@ class Pathway(GeneProvider):
                 if self.nm_gene:
                     self.allele['normal_modes'].append(random.randint(0, 
                                     self.parent.genes[self.nm_gene].n_samples))
+                self.allele['protein'].append(random.randint(0, len(self.protein_g.catalog)-1))
                 if self.rotamers_gene:
                     self.allele['rotamers'].append([[],[],[]])
                 self.allele['coord_residues'].append([])
@@ -372,6 +377,14 @@ class Pathway(GeneProvider):
         If True, only torsions and rotations of the ligand are applied.
         """
 
+        self.ligand_g._need_express = True
+        self.ligand_g.express()
+
+        protein_sample = self.allele['protein'][i]
+        self.protein_g.allele = self.protein_g.catalog[protein_sample]
+        self.protein_g._need_express = True
+        self.protein_g.express()
+
         or_x, or_y, or_z = self.ligand_center
         to_zero = ((1.0, 0.0, 0.0, -or_x),
                     (0.0, 1.0, 0.0, -or_y),
@@ -385,6 +398,7 @@ class Pathway(GeneProvider):
             matrices = (positions[i],) + (rotations[i],) + (to_zero,)
         matrices = M.multiply_matrices(*matrices)
         self.ligand_mol.openState.xform = M.chimera_xform(matrices)
+
         if self.torsion_gene:
             self.torsion_g.allele = copy.deepcopy(self.allele['torsions'][i])
             self.torsion_g._need_express = True
@@ -444,6 +458,12 @@ class Pathway(GeneProvider):
             if sample_number:
                 self.nm_g.unexpress()
                 self.nm_g._need_express = False
+
+        self.protein_g.unexpress()
+        self.protein_g._need_express = False
+
+        self.ligand_g.unexpress()
+        self.ligand_g._need_express = False
 
     def mate(self, mate):
         """
@@ -551,6 +571,7 @@ class Pathway(GeneProvider):
                     self.allele['rotamers'] = self.allele['rotamers'][:i]
                 if self.nm_gene:
                     self.allele['normal_modes'] = self.allele['normal_modes'][:i]
+                self.allele['protein'] = self.allele['protein'][:i]
                 self.allele['coord_residues'] = self.allele['coord_residues'][:i]
                 self.scores = self.scores[:i]
                 #Generate new frames
@@ -575,6 +596,7 @@ class Pathway(GeneProvider):
                         if self.nm_gene:
                             self.allele['normal_modes'].append(random.randint(0, 
                                             self.parent.genes[self.nm_gene].n_samples))
+                        self.allele['protein'].append(random.randint(0, len(self.protein_g.catalog)-1))
                         if self.rotamers_gene:
                             self.allele['rotamers'].append([[],[],[]])
                         self.allele['coord_residues'].append([])
@@ -587,7 +609,7 @@ class Pathway(GeneProvider):
                         y = np.absolute(self.p_axes.dot(y))
                         not_arrived = is_inside_ellipsoid(self.p_elen, y)
             else:
-                #Try to modify rotation/torsion/rotamers/nm
+                #Try to modify rotation/torsion/rotamers/nm/sample protein
                 operation = random.choice(self._op_roulette) 
                 if operation == 'rotation': 
                     self.allele['mutate_rotations'] = self.allele['mutate_rotations'] + 1 #For register if mutate is being useful
@@ -633,6 +655,11 @@ class Pathway(GeneProvider):
                     self.allele['mutate_nm'] = self.allele['mutate_nm'] + 1 #For register if mutate is being useful
                     self.allele['normal_modes'][i] = random.randint(0, 
                                     self.parent.genes[self.nm_gene].n_samples)
+                    self.scores[i] = {}
+                    self.act_rotamers.append(i)
+                elif operation == 'protein':
+                    self.allele['mutate_protein'] = self.allele['mutate_protein'] + 1 #For register if mutate is being useful
+                    self.allele['protein'][i] = random.randint(0, len(self.protein_g.catalog)-1)
                     self.scores[i] = {}
                     self.act_rotamers.append(i)
     
@@ -801,6 +828,14 @@ class Pathway(GeneProvider):
     @property
     def protein_mol(self):
         return self.parent.find_molecule(self.protein).compound.mol
+
+    @property
+    def ligand_g(self):
+        return self.parent.find_molecule(self.ligand)
+
+    @property
+    def protein_g(self):
+        return self.parent.find_molecule(self.protein)
 
     @property
     def torsion_g(self):

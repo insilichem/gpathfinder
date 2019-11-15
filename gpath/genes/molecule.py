@@ -162,6 +162,7 @@ class Molecule(GeneProvider):
         self._atomlookup_cache = self._cache.setdefault(self.name + '_atomlookup', LRU(300))
         self._residuelookup_cache = self._cache.setdefault(self.name + '_residuelookup', LRU(300))
         self.allele = random.choice(self.catalog)
+        self._need_express = False #Control of expression by GPathFinder
 
         # An optimization for similarity methods: xform coords are
         # cached here after all genes have expressed. See Individual.express.
@@ -188,15 +189,17 @@ class Molecule(GeneProvider):
         It also converts pseudobonds (used by Chimera to depict
         coordinated ligands to metals) to regular bonds.
         """
-        chimera.openModels.add([self.compound.mol], shareXform=True)
-        box.pseudobond_to_bond(self.compound.mol)
+        if self._need_express:
+            chimera.openModels.add([self.compound.mol], shareXform=True)
+            box.pseudobond_to_bond(self.compound.mol)
 
     def unexpress(self):
         """
         Removes the Chimera molecule from the viewer canvas
         (without deleting the object).
         """
-        chimera.openModels.remove([self.compound.mol])
+        if self._need_express:
+            chimera.openModels.remove([self.compound.mol])
 
     def mate(self, mate):
         """
