@@ -759,11 +759,7 @@ class Pathway(GeneProvider):
                     pdb_file_lines = []
                     line = frame_file.readline()
                     while line:
-                        if (line[:5] != "MODEL" and
-                            line[:6] != "ENDMDL" and
-                            line[:6] != "CONECT" and
-                            line[:3] != "END" and 
-                            line[:3] != "TER"):
+                        if line[:4] == "ATOM" or line[:6] == "HETATM":
                             pdb_file_lines.append(line)
                         line = frame_file.readline()
                 
