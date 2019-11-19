@@ -103,6 +103,10 @@ class Molecule(GeneProvider):
         Only for testing and debugging. Better run pdbfixer prior to GPATH.
         Fix potential issues that may cause troubles with OpenMM forcefields.
 
+    first_frame : str, optional
+        Path to a molecule file taht will be forced to be the first frame conformation.
+        Can be used when `path` is a directory containing a pool of protein conformations.
+
     Attributes
     ----------
     allele : tuple of str
@@ -141,12 +145,13 @@ class Molecule(GeneProvider):
         'symmetry': [[basestring]],
         'hydrogens': parse.Boolean,
         'pdbfix': parse.Boolean,
+        'first_frame': parse.RelPathToInputFile(),
         }
 
     _CATALOG = {}
     SUPPORTED_FILETYPES = ('mol2', 'pdb')
 
-    def __init__(self, path=None, symmetry=None, hydrogens=False, pdbfix=False, **kwargs):
+    def __init__(self, path=None, symmetry=None, hydrogens=False, pdbfix=False, first_frame=None,**kwargs):
         self._kwargs = kwargs.copy()
         GeneProvider.__init__(self, **kwargs)
         self._kwargs = kwargs
@@ -154,10 +159,16 @@ class Molecule(GeneProvider):
         self.symmetry = symmetry
         self.hydrogens = hydrogens
         self.pdbfix = pdbfix
+        self.first_frame = first_frame
         try:
             self.catalog = self._CATALOG[self.name]
         except KeyError:
             self.catalog = self._CATALOG[self.name] = tuple(self._compile_catalog())
+            if self.first_frame and (self.first_frame.split('.')[-1] in self.SUPPORTED_FILETYPES):
+                first_frame = set()
+                first_frame.add((self.first_frame,))
+                first_frame = tuple(first_frame)
+                self.catalog = first_frame + self.catalog
         self._compounds_cache = self._cache.setdefault(self.name + '_compounds', LRU(300))
         self._atomlookup_cache = self._cache.setdefault(self.name + '_atomlookup', LRU(300))
         self._residuelookup_cache = self._cache.setdefault(self.name + '_residuelookup', LRU(300))
