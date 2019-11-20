@@ -132,6 +132,10 @@ class Pathway(GeneProvider):
         respect of the ligand's distance from the origin of the previous 
         frame of the pathway. If not set by the user, GPathFinder calculates
         the value as 1/5 by max_step_separation.
+    frontier_margin : float, optional, defaults to 0.0
+        Safety distance from the frontier of the protein to consider that
+        the ligand is outside. Specially useful when using large ligands 
+        that can be stucked at the frontier. 
     mut_pos_pb : float, optional, defaults to 0.10
         When a mutation occurs, this value is the probability of such
         mutation to be of the type `positions`, that is, the mutation
@@ -223,13 +227,14 @@ class Pathway(GeneProvider):
         'destination': parse.Coordinates,
         'max_step_separation': parse.Coerce(float),
         'min_step_increment': parse.Coerce(float),
+        'frontier_margin': parse.Coerce(float),            
         'mut_pos_pb': parse.Coerce(float),
         }
 
     def __init__(self, ligand, protein, torsion_gene=None, rotamers_gene=None, 
                 radius_rotamers=3.0, nm_gene=None,  origin=None, 
                 inertia_axes=None, destination=None, max_step_separation=None, 
-                min_step_increment=None, mut_pos_pb=0.1, **kwargs):
+                min_step_increment=None, frontier_margin=0.0, mut_pos_pb=0.1, **kwargs):
         GeneProvider.__init__(self, **kwargs)
         self.ligand = ligand
         self.protein = protein
@@ -242,6 +247,7 @@ class Pathway(GeneProvider):
         self.inertia_axes = inertia_axes if inertia_axes else None
         self.max_separation = max_step_separation
         self.min_increment = min_step_increment
+        self.frontier_margin = frontier_margin
         self.mut_pos_pb = mut_pos_pb
         self.act_rotamers = []
         self.which_evaluations = []
@@ -249,7 +255,7 @@ class Pathway(GeneProvider):
     def __ready__(self):
         # Calculate inertia axes of the protein for further use
         self.p_axes, self.p_d2, self.p_center = inertia.atoms_inertia(self.protein_mol.atoms)
-        self.p_elen = [a for a in inertia.inertia_ellipsoid_size(self.p_d2)]
+        self.p_elen = [a + self.frontier_margin for a in inertia.inertia_ellipsoid_size(self.p_d2)]
         self.p_axes = np.array(self.p_axes)
 
         if self.inertia_axes: #Prepare origin from inertia axes
