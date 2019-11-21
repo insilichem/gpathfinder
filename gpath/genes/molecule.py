@@ -163,12 +163,13 @@ class Molecule(GeneProvider):
         try:
             self.catalog = self._CATALOG[self.name]
         except KeyError:
-            self.catalog = self._CATALOG[self.name] = tuple(self._compile_catalog())
+            self.catalog  = tuple(self._compile_catalog())
             if self.first_frame and (self.first_frame.split('.')[-1] in self.SUPPORTED_FILETYPES):
                 first_frame = set()
                 first_frame.add((self.first_frame,))
                 first_frame = tuple(first_frame)
                 self.catalog = first_frame + self.catalog
+            self._CATALOG[self.name] = self.catalog
         self._compounds_cache = self._cache.setdefault(self.name + '_compounds', LRU(300))
         self._atomlookup_cache = self._cache.setdefault(self.name + '_atomlookup', LRU(300))
         self._residuelookup_cache = self._cache.setdefault(self.name + '_residuelookup', LRU(300))
