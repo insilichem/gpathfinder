@@ -107,10 +107,13 @@ class Molecule(GeneProvider):
         Path to a molecule file that will be forced to be the first frame conformation.
         Can be used when `path` is a directory containing a pool of protein conformations.
     
-    vdw_radii : list of (str, float), optional
+    vdw_radii : dict {str: float} , optional
         Set a specific vdw_radius for a particular element (instead of standard
         Chimera VdW table). It can be useful in particular cases together with 
-        a contacts objective. Example of use: [['Fe', 2.00], ['Cu', 2.16]]. 
+        a contacts objective. Example of use in the .yaml file: 
+        vdw_radii: {
+            Fe: 2.00,
+            Cu: 2.16}
         Defaults to None
 
     Attributes
@@ -152,7 +155,7 @@ class Molecule(GeneProvider):
         'hydrogens': parse.Boolean,
         'pdbfix': parse.Boolean,
         'first_frame': parse.RelPathToInputFile(),
-        'vdw_radii': [[basestring, float]],
+        'vdw_radii': {basestring: float}
         }
 
     _CATALOG = {}
@@ -838,9 +841,8 @@ class Compound(object):
     
     def set_vdw_radii(self, vdw_radii):
         for atom in self.mol.atoms:
-            for elem in vdw_radii:
-                if str(atom.element) == elem[0]:
-                    atom.radius = elem[1]
+            if str(atom.element) in vdw_radii.keys():
+                atom.radius = vdw_radii[str(atom.element)]
 
 def _apply_pdbfix(molecule, pH=7.0, add_hydrogens=False):
     """
