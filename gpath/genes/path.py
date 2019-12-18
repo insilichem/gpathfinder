@@ -636,7 +636,7 @@ class Pathway(GeneProvider):
                     atoms = [a for a in surrounding_atoms(self.ligand_mol, self.protein_mol, self.radius_rotamers)]
                     for atom in atoms:
                         residues.add(atom.residue.id.position)
-                    residues_list = ['Protein/{}'.format(r) for r in residues]
+                    residues_list = ['{}/{}'.format(self.protein, r) for r in residues]
                     residues = []
                     for rot in residues_list:
                         a, b = rot.split('/')
@@ -684,7 +684,7 @@ class Pathway(GeneProvider):
         atoms = [a for a in surrounding_atoms(self.ligand_mol, self.protein_mol, self.radius_rotamers)]
         for atom in atoms:
             residues.add(atom.residue.id.position)
-        residues_list = ['Protein/{}'.format(r) for r in residues]
+        residues_list = ['{}/{}'.format(self.protein, r) for r in residues]
         residues = []
         for rot in residues_list:
             a, b = rot.split('/')
