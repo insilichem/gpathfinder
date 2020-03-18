@@ -97,7 +97,7 @@ History of versions
    :alt: NEW!
    
 - **v1.2.1:** 18th March 2020
-Fixes bug with format of some .mol2 files, that produced an error like "ValueError: invalid literal for int() with base 10:" when saving the results of GPathFinder. Thanks to Manish K. from the Nagoya University for reporting it.
+Bug fix: problems with the format of some .mol2 files, that produced an error like "ValueError: invalid literal for int() with base 10:" when saving the results of GPathFinder. Thanks to Manish K. from the Nagoya University for reporting it.
 
 - **v1.2.0:** 30th October 2019
 New ``PCA analysis`` functionality. If you have a trajectory file of a molecular dynamics, you can now include low energy motions calculated throughout PCA analysis. GPathFinder would include those movements in its calculations.
