@@ -271,6 +271,7 @@ def construct_path_summary(population, cfg):
                     summary[filename][j]['z'] = gene.allele['positions'][j][2][-1]
                     for sc in gene.scores[j].keys():
                         summary[filename][j][sc] = gene.scores[j][sc]
+                    summary[filename][j]['coord_residues'] = gene.allele['coord_residues'][j]
     return summary
 
 def dump_population(population, cfg, subdir=None):
@@ -308,12 +309,8 @@ def dump_population(population, cfg, subdir=None):
 
             sf_writer.writerow(['Path','Frame'] + header_keys)
             for path in paths:
-                average_values = [0.0 for k in header_keys[:-3]] #only scores are averaged, not coords
                 for i, frame in enumerate(summary[path]):
                     values_frame = [path, '{:03d}'.format(i)] + [frame[k] for k in header_keys]
-                    average_values = [sum(x) for x in zip(values_frame[2:-3], average_values)]
                     sf_writer.writerow(values_frame)
-                average_values = [x / (i+1) for x in average_values]
-                sf_writer.writerow([path, 'Average'] + average_values + ['', '', ''])
     except:
         pass

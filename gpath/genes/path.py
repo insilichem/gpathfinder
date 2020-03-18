@@ -132,6 +132,10 @@ class Pathway(GeneProvider):
         respect of the ligand's distance from the origin of the previous 
         frame of the pathway. If not set by the user, GPathFinder calculates
         the value as 1/5 by max_step_separation.
+    frontier_margin : float, optional, defaults to 0.0
+        Safety distance from the frontier of the protein to consider that
+        the ligand is outside. Specially useful when using large ligands 
+        that can be stucked at the frontier. 
     mut_pos_pb : float, optional, defaults to 0.10
         When a mutation occurs, this value is the probability of such
         mutation to be of the type `positions`, that is, the mutation
@@ -223,13 +227,14 @@ class Pathway(GeneProvider):
         'destination': parse.Coordinates,
         'max_step_separation': parse.Coerce(float),
         'min_step_increment': parse.Coerce(float),
+        'frontier_margin': parse.Coerce(float),            
         'mut_pos_pb': parse.Coerce(float),
         }
 
     def __init__(self, ligand, protein, torsion_gene=None, rotamers_gene=None, 
                 radius_rotamers=3.0, nm_gene=None,  origin=None, 
                 inertia_axes=None, destination=None, max_step_separation=None, 
-                min_step_increment=None, mut_pos_pb=0.1, **kwargs):
+                min_step_increment=None, frontier_margin=0.0, mut_pos_pb=0.1, **kwargs):
         GeneProvider.__init__(self, **kwargs)
         self.ligand = ligand
         self.protein = protein
@@ -242,6 +247,7 @@ class Pathway(GeneProvider):
         self.inertia_axes = inertia_axes if inertia_axes else None
         self.max_separation = max_step_separation
         self.min_increment = min_step_increment
+        self.frontier_margin = frontier_margin
         self.mut_pos_pb = mut_pos_pb
         self.act_rotamers = []
         self.which_evaluations = []
@@ -249,7 +255,7 @@ class Pathway(GeneProvider):
     def __ready__(self):
         # Calculate inertia axes of the protein for further use
         self.p_axes, self.p_d2, self.p_center = inertia.atoms_inertia(self.protein_mol.atoms)
-        self.p_elen = [a for a in inertia.inertia_ellipsoid_size(self.p_d2)]
+        self.p_elen = [a + self.frontier_margin for a in inertia.inertia_ellipsoid_size(self.p_d2)]
         self.p_axes = np.array(self.p_axes)
 
         if self.inertia_axes: #Prepare origin from inertia axes
@@ -283,6 +289,8 @@ class Pathway(GeneProvider):
             self._op_roulette.append('rotamers')
         if self.nm_gene:
             self._op_roulette.append('nm')
+        if len(self.protein_g.catalog) > 1:
+            self._op_roulette.append('protein')
 
         #Making the initial allele
         self.allele = {}
@@ -299,6 +307,8 @@ class Pathway(GeneProvider):
             self.allele['rotamers'] = [ [[],[],[]] ]
         if self.nm_gene:
             self.allele['normal_modes'] = [None]
+        self.allele['protein'] = [0]
+        self.allele['coord_residues'] = [[]] #To store possible coord residues when evaluating metal_sites
         self.allele['mate_torsions'] = 0  #To register if mate is being useful
         self.allele['mate_positions'] = 0 #To register if mate is being useful
         self.allele['mate_rotations'] = 0 #To register if mate is being useful
@@ -307,6 +317,7 @@ class Pathway(GeneProvider):
         self.allele['mutate_rotations'] = 0 #To register if mutate is being useful
         self.allele['mutate_rotamers'] = 0 #To register if mutate is being useful
         self.allele['mutate_nm'] = 0 #To register if mutate is being useful
+        self.allele['mutate_protein'] = 0 #To register if mutate is being useful
         self.scores = [{}] #To store scores at the evaluation stage
 
         #Initial pathway
@@ -331,8 +342,10 @@ class Pathway(GeneProvider):
                 if self.nm_gene:
                     self.allele['normal_modes'].append(random.randint(0, 
                                     self.parent.genes[self.nm_gene].n_samples))
+                self.allele['protein'].append(random.randint(0, len(self.protein_g.catalog)-1))
                 if self.rotamers_gene:
                     self.allele['rotamers'].append([[],[],[]])
+                self.allele['coord_residues'].append([])
                 self.scores.append({})
                 last_point = [x[3] for x in self.allele['positions'][-1]]
             if self.destination:
@@ -370,6 +383,14 @@ class Pathway(GeneProvider):
         If True, only torsions and rotations of the ligand are applied.
         """
 
+        self.ligand_g._need_express = True
+        self.ligand_g.express()
+
+        protein_sample = self.allele['protein'][i]
+        self.protein_g.allele = self.protein_g.catalog[protein_sample]
+        self.protein_g._need_express = True
+        self.protein_g.express()
+
         or_x, or_y, or_z = self.ligand_center
         to_zero = ((1.0, 0.0, 0.0, -or_x),
                     (0.0, 1.0, 0.0, -or_y),
@@ -383,6 +404,7 @@ class Pathway(GeneProvider):
             matrices = (positions[i],) + (rotations[i],) + (to_zero,)
         matrices = M.multiply_matrices(*matrices)
         self.ligand_mol.openState.xform = M.chimera_xform(matrices)
+
         if self.torsion_gene:
             self.torsion_g.allele = copy.deepcopy(self.allele['torsions'][i])
             self.torsion_g._need_express = True
@@ -442,6 +464,12 @@ class Pathway(GeneProvider):
             if sample_number:
                 self.nm_g.unexpress()
                 self.nm_g._need_express = False
+
+        self.protein_g.unexpress()
+        self.protein_g._need_express = False
+
+        self.ligand_g.unexpress()
+        self.ligand_g._need_express = False
 
     def mate(self, mate):
         """
@@ -549,6 +577,8 @@ class Pathway(GeneProvider):
                     self.allele['rotamers'] = self.allele['rotamers'][:i]
                 if self.nm_gene:
                     self.allele['normal_modes'] = self.allele['normal_modes'][:i]
+                self.allele['protein'] = self.allele['protein'][:i]
+                self.allele['coord_residues'] = self.allele['coord_residues'][:i]
                 self.scores = self.scores[:i]
                 #Generate new frames
                 last_point = [x[3] for x in self.allele['positions'][-1]]
@@ -572,8 +602,10 @@ class Pathway(GeneProvider):
                         if self.nm_gene:
                             self.allele['normal_modes'].append(random.randint(0, 
                                             self.parent.genes[self.nm_gene].n_samples))
+                        self.allele['protein'].append(random.randint(0, len(self.protein_g.catalog)-1))
                         if self.rotamers_gene:
                             self.allele['rotamers'].append([[],[],[]])
+                        self.allele['coord_residues'].append([])
                         self.scores.append({})
                         last_point = [x[3] for x in self.allele['positions'][-1]]
                     if self.destination:
@@ -583,7 +615,7 @@ class Pathway(GeneProvider):
                         y = np.absolute(self.p_axes.dot(y))
                         not_arrived = is_inside_ellipsoid(self.p_elen, y)
             else:
-                #Try to modify rotation/torsion/rotamers/nm
+                #Try to modify rotation/torsion/rotamers/nm/sample protein
                 operation = random.choice(self._op_roulette) 
                 if operation == 'rotation': 
                     self.allele['mutate_rotations'] = self.allele['mutate_rotations'] + 1 #For register if mutate is being useful
@@ -604,7 +636,7 @@ class Pathway(GeneProvider):
                     atoms = [a for a in surrounding_atoms(self.ligand_mol, self.protein_mol, self.radius_rotamers)]
                     for atom in atoms:
                         residues.add(atom.residue.id.position)
-                    residues_list = ['Protein/{}'.format(r) for r in residues]
+                    residues_list = ['{}/{}'.format(self.protein, r) for r in residues]
                     residues = []
                     for rot in residues_list:
                         a, b = rot.split('/')
@@ -631,6 +663,11 @@ class Pathway(GeneProvider):
                                     self.parent.genes[self.nm_gene].n_samples)
                     self.scores[i] = {}
                     self.act_rotamers.append(i)
+                elif operation == 'protein':
+                    self.allele['mutate_protein'] = self.allele['mutate_protein'] + 1 #For register if mutate is being useful
+                    self.allele['protein'][i] = random.randint(0, len(self.protein_g.catalog)-1)
+                    self.scores[i] = {}
+                    self.act_rotamers.append(i)
     
     def actualize_rotamers(self, i):
         """
@@ -647,7 +684,7 @@ class Pathway(GeneProvider):
         atoms = [a for a in surrounding_atoms(self.ligand_mol, self.protein_mol, self.radius_rotamers)]
         for atom in atoms:
             residues.add(atom.residue.id.position)
-        residues_list = ['Protein/{}'.format(r) for r in residues]
+        residues_list = ['{}/{}'.format(self.protein, r) for r in residues]
         residues = []
         for rot in residues_list:
             a, b = rot.split('/')
@@ -755,11 +792,7 @@ class Pathway(GeneProvider):
                     pdb_file_lines = []
                     line = frame_file.readline()
                     while line:
-                        if (line[:5] != "MODEL" and
-                            line[:6] != "ENDMDL" and
-                            line[:6] != "CONECT" and
-                            line[:3] != "END" and 
-                            line[:3] != "TER"):
+                        if line[:4] == "ATOM" or line[:6] == "HETATM":
                             pdb_file_lines.append(line)
                         line = frame_file.readline()
                 
@@ -769,8 +802,7 @@ class Pathway(GeneProvider):
                     prev_res = 0
                     last_change_res = 0
                     for line in pdb_file_lines:
-                        l_split = line.split()
-                        current_atom, current_res = int(l_split[1]), int(l_split[5])
+                        current_atom, current_res = int(line[6:11]), int(line[22:26])
                         if current_atom > prev_atom:
                             prev_atom = current_atom
                         else:
@@ -785,7 +817,7 @@ class Pathway(GeneProvider):
                             current_res = prev_res
                         else:
                             current_res = prev_res
-                        line = line[:7] + '{:4d}'.format(current_atom) + line[11:23] + '{:3d}'.format(current_res) + line[26:]
+                        line = line[:6] + '{:5d}'.format(current_atom) + line[11:22] + '{:4d}'.format(current_res) + line[26:]
                         f.write("%s" % line)  
                     
                 z.write(framename, os.path.basename(framename))
@@ -802,6 +834,14 @@ class Pathway(GeneProvider):
     @property
     def protein_mol(self):
         return self.parent.find_molecule(self.protein).compound.mol
+
+    @property
+    def ligand_g(self):
+        return self.parent.find_molecule(self.ligand)
+
+    @property
+    def protein_g(self):
+        return self.parent.find_molecule(self.protein)
 
     @property
     def torsion_g(self):

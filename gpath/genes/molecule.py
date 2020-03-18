@@ -103,6 +103,19 @@ class Molecule(GeneProvider):
         Only for testing and debugging. Better run pdbfixer prior to GPATH.
         Fix potential issues that may cause troubles with OpenMM forcefields.
 
+    first_frame : str, optional
+        Path to a molecule file that will be forced to be the first frame conformation.
+        Can be used when `path` is a directory containing a pool of protein conformations.
+    
+    vdw_radii : dict {str: float} , optional
+        Set a specific vdw_radius for a particular element (instead of standard
+        Chimera VdW table). It can be useful in particular cases together with 
+        a contacts objective. Example of use in the .yaml file: 
+        vdw_radii: {
+            Fe: 2.00,
+            Cu: 2.16}
+        Defaults to None
+
     Attributes
     ----------
     allele : tuple of str
@@ -141,12 +154,15 @@ class Molecule(GeneProvider):
         'symmetry': [[basestring]],
         'hydrogens': parse.Boolean,
         'pdbfix': parse.Boolean,
+        'first_frame': parse.RelPathToInputFile(),
+        'vdw_radii': {basestring: float}
         }
 
     _CATALOG = {}
     SUPPORTED_FILETYPES = ('mol2', 'pdb')
 
-    def __init__(self, path=None, symmetry=None, hydrogens=False, pdbfix=False, **kwargs):
+    def __init__(self, path=None, symmetry=None, hydrogens=False, pdbfix=False, 
+                 first_frame=None, vdw_radii=None, **kwargs):
         self._kwargs = kwargs.copy()
         GeneProvider.__init__(self, **kwargs)
         self._kwargs = kwargs
@@ -154,14 +170,23 @@ class Molecule(GeneProvider):
         self.symmetry = symmetry
         self.hydrogens = hydrogens
         self.pdbfix = pdbfix
+        self.first_frame = first_frame
+        self.vdw_radii = vdw_radii
         try:
             self.catalog = self._CATALOG[self.name]
         except KeyError:
-            self.catalog = self._CATALOG[self.name] = tuple(self._compile_catalog())
+            self.catalog  = tuple(self._compile_catalog())
+            if self.first_frame and (self.first_frame.split('.')[-1] in self.SUPPORTED_FILETYPES):
+                first_frame = set()
+                first_frame.add((self.first_frame,))
+                first_frame = tuple(first_frame)
+                self.catalog = first_frame + self.catalog
+            self._CATALOG[self.name] = self.catalog
         self._compounds_cache = self._cache.setdefault(self.name + '_compounds', LRU(300))
         self._atomlookup_cache = self._cache.setdefault(self.name + '_atomlookup', LRU(300))
         self._residuelookup_cache = self._cache.setdefault(self.name + '_residuelookup', LRU(300))
         self.allele = random.choice(self.catalog)
+        self._need_express = False #Control of expression by GPathFinder
 
         # An optimization for similarity methods: xform coords are
         # cached here after all genes have expressed. See Individual.express.
@@ -188,15 +213,17 @@ class Molecule(GeneProvider):
         It also converts pseudobonds (used by Chimera to depict
         coordinated ligands to metals) to regular bonds.
         """
-        chimera.openModels.add([self.compound.mol], shareXform=True)
-        box.pseudobond_to_bond(self.compound.mol)
+        if self._need_express:
+            chimera.openModels.add([self.compound.mol], shareXform=True)
+            box.pseudobond_to_bond(self.compound.mol)
 
     def unexpress(self):
         """
         Removes the Chimera molecule from the viewer canvas
         (without deleting the object).
         """
-        chimera.openModels.remove([self.compound.mol])
+        if self._need_express:
+            chimera.openModels.remove([self.compound.mol])
 
     def mate(self, mate):
         """
@@ -307,6 +334,8 @@ class Molecule(GeneProvider):
             base.add_hydrogens()
         if self.pdbfix:
             base.apply_pdbfix()
+        if self.vdw_radii:
+            base.set_vdw_radii(self.vdw_radii)
         return base
 
     def _compile_catalog(self):
@@ -809,7 +838,11 @@ class Compound(object):
         Run PDBFixer and replace original molecule with new one
         """
         self.mol = _apply_pdbfix(self.mol, pH)
-
+    
+    def set_vdw_radii(self, vdw_radii):
+        for atom in self.mol.atoms:
+            if str(atom.element) in vdw_radii.keys():
+                atom.radius = vdw_radii[str(atom.element)]
 
 def _apply_pdbfix(molecule, pH=7.0, add_hydrogens=False):
     """

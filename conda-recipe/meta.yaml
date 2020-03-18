@@ -1,9 +1,9 @@
 # Requires additional channels:
-#   conda build --python=2.7 -c insilichem -c bioconda -c conda-forge -c omnia -c "$CONDA_PREFIX/conda-bld/" .
+#   conda build --python=2.7 -c omnia -c conda-forge -c bioconda -c josan_bcn "$CONDA_PREFIX/conda-bld/" .
 
 package:
   name: gpathfinder
-  version: 1.2.0
+  version: 1.2.1
 
 about:
   home: https://github.com/insilichem/gpathfinder
@@ -42,7 +42,7 @@ requirements:
     - smina 2017.11.*
     # InsiliChem channel
     - autodocktools-prepare 1.5.7.*
-    - prody 1.8.*
+    - prody 1.10.*
 
 test:
   imports:
