@@ -63,12 +63,6 @@ Features
 
 - Side-chain flexibility using rotamer libraries
 - Global movements by Normal Mode Analysis sampling
-
-.. image:: docs/data/new.jpeg 
-   :align: left 
-   :height: 30px 
-   :alt: NEW!
-
 - Global movements extracted from a PCA analysis over a MD trajectory (.dcd file)
 
 **Different options for evalute and optimize the solutions**
@@ -101,6 +95,9 @@ History of versions
    :align: left 
    :height: 30px 
    :alt: NEW!
+   
+- **v1.2.1:** 18th March 2020
+Fixes bug with format of some .mol2 files, that produced an error like "ValueError: invalid literal for int() with base 10:" when saving the results of GPathFinder. Thanks to Manish K. from the Nagoya University for reporting it.
 
 - **v1.2.0:** 30th October 2019
 New ``PCA analysis`` functionality. If you have a trajectory file of a molecular dynamics, you can now include low energy motions calculated throughout PCA analysis. GPathFinder would include those movements in its calculations.
