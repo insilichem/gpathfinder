@@ -70,7 +70,7 @@ from FitMap.search import random_rotation
 # GPATH
 from gpath.genes import GeneProvider
 from gpath import parse
-from gpath.exceptions import LigandDirectoryAndTorsion
+from gpath.exceptions import LigandDirectoryAndTorsion, ProteinDirectoryAndNM
 
 IDENTITY = ((1.0, 0.0, 0.0, 0.0),
             (0.0, 1.0, 0.0, 0.0),
@@ -257,6 +257,9 @@ class Pathway(GeneProvider):
         # Check if ligand conformers and torsion are used simultaneously
         if len(self.ligand_g.catalog) > 1 and self.torsion_gene:
             raise LigandDirectoryAndTorsion('If you set the Ligand molecule to be a directory, you can not use a path_torsion gene simultaneously')
+        # Check if protein conformers and NM are used simultaneously
+        if len(self.protein_g.catalog) > 1 and self.nm_gene:
+            raise ProteinDirectoryAndNM('If you set the Protein molecule to be a directory, you can not use a path_normalmodes gene simultaneously')
 
         # Calculate inertia axes of the protein for further use
         self.p_axes, self.p_d2, self.p_center = inertia.atoms_inertia(self.protein_mol.atoms)

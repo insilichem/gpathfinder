@@ -52,3 +52,6 @@ class TooManyResidues(Exception):
 
 class LigandDirectoryAndTorsion(Exception):
     pass
+
+class ProteinDirectoryAndNM(Exception):
+    pass
