@@ -1,12 +1,12 @@
-.. GPathFinder: Identification of ligand binding pathways 
+.. GPathFinder: Identification of ligand binding pathways
 .. by a multi-objective genetic algorithm
 
    https://github.com/insilichem/gpathfinder
 
    Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
-   Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+   Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca,
    Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
-   
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -35,12 +35,12 @@ GPathFinder
 .. image:: https://img.shields.io/github/license/insilichem/gpathfinder.svg?color=orange
    :target: http://www.apache.org/licenses/LICENSE-2.0
 
-.. image:: https://img.shields.io/badge/doi-10.3390%2Fijms20133155-blue.svg 
+.. image:: https://img.shields.io/badge/doi-10.3390%2Fijms20133155-blue.svg
    :target: https://www.mdpi.com/1422-0067/20/13/3155
 
 .. image:: https://img.shields.io/static/v1.svg?label=platform&message=linux%20|%20macOS&color=lightgrey
 
-GPathFinder is an extension built over GaudiMM core to allow the identification 
+GPathFinder is an extension built over GaudiMM core to allow the identification
 of ligand binding pathways at atomistic level.
 
 .. image:: docs/data/gpathfinderlogo-whitebg.jpg
@@ -59,11 +59,25 @@ Features
 
 - Dihedral angles
 
+.. image:: docs/data/new.jpeg
+   :align: left
+   :height: 30px
+   :alt: NEW!
+
+- Pool of conformations provided by the user (e.g. through conformer generation)
+
 **Different levels of flexibility for the receptor**
 
 - Side-chain flexibility using rotamer libraries
 - Global movements by Normal Mode Analysis sampling
 - Global movements extracted from a PCA analysis over a MD trajectory (.dcd file)
+
+.. image:: docs/data/new.jpeg
+   :align: left
+   :height: 30px
+   :alt: NEW!
+
+- Pool of conformations provided by the user (e.g. snapshots from a MD trajectory)
 
 **Different options for evalute and optimize the solutions**
 
@@ -71,7 +85,7 @@ Features
 - Vina scoring function
 - Smina, with the possibility to customize the scoring function and use custom atom parameters
 - Smoothness of the ligand movements
- 
+
 Documentation and support
 -------------------------
 
@@ -91,11 +105,14 @@ GPathFinder and GaudiMM are licensed under the Apache License, Version 2.0. Chec
 History of versions
 -------------------
 
-.. image:: docs/data/new.jpeg 
-   :align: left 
-   :height: 30px 
+.. image:: docs/data/new.jpeg
+   :align: left
+   :height: 30px
    :alt: NEW!
-   
+
+- **v1.3.0:** 10th November 2020
+The user can provide a set of conformations for the ligand or the protein or both. This allows, for example, to use a set of snapshots from a MD trajectory to define the conformational space that GPathFinder will explore.
+
 - **v1.2.1:** 18th March 2020
 Bug fix: problems with the format of some .mol2 files, that produced an error like "ValueError: invalid literal for int() with base 10:" when saving the results of GPathFinder. Thanks to Manish K. from the Nagoya University for reporting it.
 
