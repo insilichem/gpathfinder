@@ -28,7 +28,7 @@ How to use your pool of conformations in a GPathFinder calculation
 Objectives
 ==========
 
-Since version 1.3.0 GPathFinder allows to provide a custom set of conformations, for the ligand or the protein or both. It allows restraining the conformational space that the calculation will explore.
+Since version 1.3.0 GPathFinder allows to provide a custom set of conformations for the ligand or the protein or both. It allows restraining the conformational space that the calculation will explore.
 
 This feature would be of particular utility when the conformational space of a molecule is known beforehand. For example, suppose you have a sampling for your protein obtained from a Molecular Dynamics. In that case, it could be interesting to see if the ligand can access the binding site using only that set of conformations of the protein. The same applies for the ligand, you can have a bunch of conformers that are known to be the most stable, and therefore it could be interesting to test if it can access the binding site adopting only those conformations.
 
@@ -93,7 +93,7 @@ Once you have generated the files of the conformations, you should group them in
 
 .. tip::
 
-   As said, you can use a custom pool of conformations for one of the molecules (ligand or protein), or both. You would need to modify one or both `molecule` gene/s and the path` gene accordingly.
+   As said, you can use a custom pool of conformations for one of the molecules (ligand or protein), or both. You would need to modify one or both `molecule` gene/s and the `path` gene accordingly.
 
 3. Indicating the initial conformation of the pathway
 =====================================================
