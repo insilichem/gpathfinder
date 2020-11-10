@@ -63,7 +63,7 @@ Once you have generated the files of the conformations, you should group them in
 2. Preparing the GPathFinder .yaml input file
 =============================================
 
-- If you are using files for the ligand molecule:
+- If you are using several files for the ligand molecule:
 
 1. You should indicate in the Ligand `molecule` gene the route to the folder containing the ligand conformations:
 
@@ -77,7 +77,7 @@ Once you have generated the files of the conformations, you should group them in
     :align: center
     :alt: ligand_path_gene
 
-- If you are using files for the protein molecule:
+- If you are using several files for the protein molecule:
 
 1. You should indicate in the Protein `molecule` gene the route to the folder containing the receptor conformations:
 
