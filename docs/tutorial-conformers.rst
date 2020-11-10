@@ -21,9 +21,9 @@
 
 .. _tutorial-conformers:
 
-==================================================================
-How to use your pool of conformations in a GPathFinder calculation
-==================================================================
+=========================================================================
+How to use your custom pool of conformations in a GPathFinder calculation
+=========================================================================
 
 Objectives
 ==========
