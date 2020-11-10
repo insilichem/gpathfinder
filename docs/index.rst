@@ -1,12 +1,12 @@
-.. GPathFinder: Identification of ligand binding pathways 
+.. GPathFinder: Identification of ligand binding pathways
 .. by a multi-objective genetic algorithm
 
    https://github.com/insilichem/gpathfinder
 
    Copyright 2019 José-Emilio Sánchez Aparicio, Giuseppe Sciortino,
-   Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca, 
+   Daniel Villadrich Herrmannsdoerfer, Pablo Orenes Chueca,
    Jaime Rodríguez-Guerra Pedregal and Jean-Didier Maréchal
-   
+
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
@@ -40,7 +40,7 @@ GPathFinder
 .. .. image:: https://img.shields.io/badge/doi-10.1002%2Fjcc.24847-blue.svg
 ..   :target: http://onlinelibrary.wiley.com/doi/10.1002/jcc.24847/full
 
-GPathFinder is an extension built over GaudiMM core to allow the identification 
+GPathFinder is an extension built over GaudiMM core to allow the identification
 of ligand binding pathways at atomistic level.
 
 .. image:: data/gpathfinderlogo-whitebg.jpg
@@ -68,6 +68,7 @@ of ligand binding pathways at atomistic level.
     tutorial-input.rst
     tutorial-mol2.rst
     tutorial-output.rst
+    tutorial-conformers.rst
 
 .. toctree::
     :maxdepth: 1

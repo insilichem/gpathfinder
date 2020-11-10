@@ -113,6 +113,8 @@ History of versions
 - **v1.3.0:** 10th November 2020
 The user can provide a set of conformations for the ligand or the protein or both. This allows, for example, to use a set of snapshots from a MD trajectory to define the conformational space that GPathFinder will explore.
 
+You have a tutorial on `how to use <https://gpathfinder.readthedocs.io/en/latest/tutorial-conformers.html>`_ the new feature.
+
 - **v1.2.1:** 18th March 2020
 Bug fix: problems with the format of some .mol2 files, that produced an error like "ValueError: invalid literal for int() with base 10:" when saving the results of GPathFinder. Thanks to Manish K. from the Nagoya University for reporting it.
 
@@ -129,7 +131,7 @@ New format for the ``.pdb`` files of the output that can be imported as a MD mov
 
 New ``trajectory.pdb`` file in the output. For each solution, shows the trajectory of the ligand, taking its center as a reference.
 
-Command to lauch the program is now ``gpath run`` instead of `gaudi run` to ensure compatibility with GaudiMM.
+Command to lauch the program is now ``gpath run`` instead of ``gaudi run`` to ensure compatibility with GaudiMM.
 
 Bug fix: similarity between solutions is calculated now at each generation, to avoid some cases where repeated or very similar solutions appeared, especially when using only clashes evaluation.
 
@@ -141,3 +143,12 @@ OS Compatibility
 GPathFinder is compatible with Linux and macOS.
 
 If you find some dificulties when installing it in a concrete distribution, please use the `issues page <https://github.com/insilichem/gpathfinder/issues>`_ to report them.
+
+How to cite this software
+-------------------------
+
+To cite this software, please refer to our `article in IJMS <https://www.mdpi.com/1422-0067/20/13/3155>`_:
+
+Sánchez-Aparicio, J.-E.; Sciortino, G.; Herrmannsdoerfer, D.V.; Chueca, P.O.; Pedregal, J. .-G.; Maréchal, J.-D. GPathFinder: Identification of Ligand-Binding Pathways by a Multi-Objective Genetic Algorithm. *Int. J. Mol. Sci.* **2019**, *20*, 3155.
+
+
