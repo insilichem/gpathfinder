@@ -75,9 +75,12 @@ class NormalModes(GeneProvider):
         Name of the Gene containing the actual molecule
     modes : list, optional, default=range(20)
         Modes to be used to move the molecule
-    pca_atoms_selection: str, optional
-        selection of atom to perform pca (using prody language) IMPORTANT:
-        number of residues should start from 0. Residue name can also be used. 
+    pca_atoms : str, optional
+        Either:
+        - calpha : use alpha carbon to calculate normal modes
+        - backbone : use all backbone atoms to calculate normal modes 
+        - all : use all atoms of the receptor to calculate normal modes
+        Default to calpha
     group_by : str or callable, optional, default=None
         group_by_*: algorithm name or callable
         coarseGrain(prm) which makes ``mol.select().setBetas(i)``,
@@ -160,7 +163,7 @@ class NormalModes(GeneProvider):
         'write_modes': bool,
         'write_samples': bool,
         parse.Required('target'): parse.Molecule_name,
-        'pca_atoms_selection': parse.Coerce(str),
+        'pca_atoms': parse.In(['calpha', 'backbone','all']),
         'group_by': parse.In(['residues', 'mass', 'calpha', '']),
         'group_lambda': parse.All(parse.Coerce(int), parse.Range(min=1)),
         'modes': [parse.All(parse.Coerce(int), parse.Range(min=0))],
@@ -178,7 +181,7 @@ class NormalModes(GeneProvider):
     }
 
     def __init__(self, method='prody', target=None, modes=None, trajectory=None, n_samples=100, rmsd=2.0,
-                 pca_atoms_selection = None,group_by='residues', group_lambda=None, samples_path=None,
+                 pca_atoms ='calpha',group_by='residues', group_lambda=None, samples_path=None,
                  path=None, write_modes=False, write_samples=False,
                  minimize=False, minimization_tolerance=10, minimization_iterations=1000,
                  forcefields=('amber99sbildn.xml',), auto_parametrize=None,
@@ -220,7 +223,7 @@ class NormalModes(GeneProvider):
         elif method == 'pca':
             if path is None:
                 self.normal_modes_function = self.calculate_pca_normal_modes 
-                self.pca_atoms_selection = pca_atoms_selection
+                self.pca_atoms = pca_atoms
             else:
                 self.path = path
                 self.normal_modes_function = self.read_prody_normal_modes
@@ -380,7 +383,7 @@ class NormalModes(GeneProvider):
 
         prody_molecule, chimera2prody = convert_chimera_molecule_to_prody(self.molecule) 
 
-        modes = pca_modes(prody_molecule, self.trajectory, self.max_modes, self.pca_atoms_selection) 
+        modes = pca_modes(prody_molecule, self.trajectory, self.max_modes, self.pca_atoms) 
         samples = prody.sampleModes(modes=modes[self.modes], atoms=prody_molecule, 
                                    n_confs=self.n_samples, rmsd=self.rmsd) 
         samples.addCoordset(prody_molecule)
@@ -458,16 +461,32 @@ def prody_modes(molecule, max_modes, algorithm=None, **options):
         modes.calcModes(n_modes=max_modes)
     return modes
 
-def pca_modes(molecule, trajectory, max_modes, pca_atoms_selection):
+def pca_modes(molecule, trajectory, max_modes, pca_atoms):
     modes = None
     traj = prody.parseDCD(trajectory) #trajectory file (.dcd)
-    traj.setAtoms(molecule.select(pca_atoms_selection)) 
-    traj.setCoords(molecule)
-    traj.superpose()
-    pca = prody.EDA('normal modes for {}'.format(molecule.getTitle())) #EDA is better for MD trajectories
-    pca.buildCovariance(traj)
-    pca.calcModes(n_modes=max_modes)
-    modes = prody.extendModel(pca, molecule.select(pca_atoms_selection), molecule, norm=True)[0]
+    if pca_atoms == "calpha":
+        traj.setAtoms(molecule.calpha) 
+        traj.setCoords(molecule)
+        traj.superpose()
+        pca = prody.EDA('normal modes for {}'.format(molecule.getTitle())) #EDA is better for MD trajectories
+        pca.buildCovariance(traj)
+        pca.calcModes(n_modes=max_modes)
+        modes = prody.extendModel(pca, molecule.calpha, molecule, norm=True)[0]
+    elif pca_atoms == "backbone":
+        traj.setAtoms(molecule.backbone) 
+        traj.setCoords(molecule)
+        traj.superpose()
+        pca = prody.EDA('normal modes for {}'.format(molecule.getTitle())) #EDA is better for MD trajectories
+        pca.buildCovariance(traj)
+        pca.calcModes(n_modes=max_modes)
+        modes = prody.extendModel(pca, molecule.backbone, molecule, norm=True)[0]
+    else:
+        traj.setAtoms(molecule) 
+        traj.setCoords(molecule)
+        traj.superpose()
+        pca = prody.EDA('normal modes for {}'.format(molecule.getTitle())) #EDA is better for MD trajectories
+        pca.buildCovariance(traj)
+        pca.calcModes(n_modes=max_modes)
     return modes
     
 def gaussian_modes(path):
