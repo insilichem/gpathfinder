@@ -397,7 +397,8 @@ class PathScoring(ObjectiveProvider):
             prev_ligand_atoms_coords = self._get_mol_coords(self.ligand(ind))
         if "Protein" in self.smoothness_molecules:
             prev_protein_atoms_coords = self._get_mol_coords(self.protein(ind), name="CA")
-        ind.genes[self._probe].gp_unexpress(0, smoothness_molecules=self.smoothness_molecules)
+
+        ind.genes[self._probe].gp_unexpress(0, with_rotamers=False, smoothness_molecules=self.smoothness_molecules)
         scores[0]['smoothness'] = 0
 
         for i in range(1, len(ind.genes[self._probe].allele['positions'])):
@@ -414,6 +415,7 @@ class PathScoring(ObjectiveProvider):
                     current_protein_atoms_coords = self._get_mol_coords(self.protein(ind), name="CA")
                     smooth_point.append(self._distance_atom_sets(prev_protein_atoms_coords, current_protein_atoms_coords))
                 smooth_point = sum(smooth_point) / len(smooth_point)
+                #print("A: ", ind.genes[self._probe].allele['protein'][i-1],ind.genes[self._probe].allele['protein'][i],smooth_point)
                 if smooth_point < self.threshold:
                     smooth_point = 0.0
                 #Prepare next position of the pathway
@@ -425,12 +427,13 @@ class PathScoring(ObjectiveProvider):
                 scores[i]['smoothness'] = smooth_point
                 if self.method == 'sum' or self.method == 'average':
                     smoothscore += smooth_point
-                ind.genes[self._probe].gp_unexpress(i, smoothness_molecules=self.smoothness_molecules)
+                ind.genes[self._probe].gp_unexpress(i, with_rotamers=False,smoothness_molecules=self.smoothness_molecules)
 
             else:
 
                 if self.method == 'sum' or self.method == 'average':
                     smoothscore += scores[i]['smoothness']
+                #print("B: ", ind.genes[self._probe].allele['protein'][i-1],ind.genes[self._probe].allele['protein'][i],scores[i]['smoothness'])
                 #Prepare next position of the pathway if necessary
                 if i < (len(ind.genes[self._probe].allele['positions']) - 1):
                     if not 'smoothness' in scores[i+1].keys():
@@ -439,7 +442,7 @@ class PathScoring(ObjectiveProvider):
                             prev_ligand_atoms_coords = self._get_mol_coords(self.ligand(ind))
                         if "Protein" in self.smoothness_molecules:
                             prev_protein_atoms_coords = self._get_mol_coords(self.protein(ind), name="CA")
-                        ind.genes[self._probe].gp_unexpress(i, smoothness_molecules=self.smoothness_molecules)
+                        ind.genes[self._probe].gp_unexpress(i, with_rotamers=False, smoothness_molecules=self.smoothness_molecules)
 
         if self.method == 'sum':
             return smoothscore
@@ -553,6 +556,6 @@ class PathScoring(ObjectiveProvider):
         for atom in chimera_mol.atoms:
             if name and atom.name == name:
                 coords[atom.serialNumber] = list(atom.xformCoord())
-            else:
+            elif not name:
                 coords[atom.serialNumber] = list(atom.xformCoord())
         return coords

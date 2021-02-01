@@ -450,7 +450,7 @@ class Pathway(GeneProvider):
                 self.rotamers_g._need_express = True
                 self.rotamers_g.express()
 
-    def gp_unexpress(self, i, smoothness_molecules=[]):
+    def gp_unexpress(self, i, with_rotamers=True, smoothness_molecules=[]):
         """
         For the demanded frame ``i``:
             1. Undo translation, rotation and torsions made to the
@@ -468,7 +468,7 @@ class Pathway(GeneProvider):
             self.torsion_g.unexpress()
             self.torsion_g._need_express = False
 
-        if self.rotamers_gene and (smoothness_molecules != ["Ligand"]):
+        if self.rotamers_gene and with_rotamers and (smoothness_molecules != ["Ligand"]):
             if self.allele['rotamers'][i][0]:
                 self.rotamers_g.unexpress()
                 self.rotamers_g._need_express = False
@@ -532,6 +532,13 @@ class Pathway(GeneProvider):
         #Delete previous calculated scores
         self.scores[i] = {}
         mate.scores[j] = {}
+        #For smoothness score (dependent on the previous frame)
+        if i < (len(self.allele['positions']) - 1):
+            if 'smoothness' in self.scores[i+1].keys():
+                self.scores[i+1].pop('smoothness', None)
+        if j < (len(mate.allele['positions']) - 1):
+            if 'smoothness' in mate.scores[j+1].keys():
+                mate.scores[j+1].pop('smoothness', None)
         #Force rotamers actualization
         self.act_rotamers.append(i)
         mate.act_rotamers.append(j)
@@ -552,6 +559,13 @@ class Pathway(GeneProvider):
         #Delete previous calculated scores
         self.scores[i] = {}
         mate.scores[j] = {}
+        #For smoothness score (dependent on the previous frame)
+        if i < (len(self.allele['positions']) - 1):
+            if 'smoothness' in self.scores[i+1].keys():
+                self.scores[i+1].pop('smoothness', None)
+        if j < (len(mate.allele['positions']) - 1):
+            if 'smoothness' in mate.scores[i+1].keys():
+                mate.scores[i+1].pop('smoothness', None)
         #Force rotamers actualization
         self.act_rotamers.append(i)
         mate.act_rotamers.append(j)
@@ -637,16 +651,28 @@ class Pathway(GeneProvider):
                     self.allele['mutate_rotations'] = self.allele['mutate_rotations'] + 1 #For register if mutate is being useful
                     self.allele['rotations'][i] = random_rotation()
                     self.scores[i] = {}
+                    #For smoothness score (dependent on the previous frame)
+                    if i < (len(self.allele['positions']) - 1):
+                        if 'smoothness' in self.scores[i+1].keys():
+                            self.scores[i+1].pop('smoothness', None)
                     self.act_rotamers.append(i)
                 elif operation == 'torsion':
                     self.allele['mutate_torsions'] = self.allele['mutate_torsions'] + 1 #For register if mutate is being useful
                     self.torsion_g.gp_mutate(1.0)
                     self.allele['torsions'][i] = copy.deepcopy(self.torsion_g.allele)
                     self.scores[i] = {}
+                    #For smoothness score (dependent on the previous frame)
+                    if i < (len(self.allele['positions']) - 1):
+                        if 'smoothness' in self.scores[i+1].keys():
+                            self.scores[i+1].pop('smoothness', None)
                     self.act_rotamers.append(i)
                 elif operation == 'rotamers':
                     self.allele['mutate_rotamers'] = self.allele['mutate_rotamers'] + 1 #For register if mutate is being useful
                     self.scores[i] = {} #put the score to 0 and allow path_scoring to recalculate rotamers
+                    #For smoothness score (dependent on the previous frame)
+                    if i < (len(self.allele['positions']) - 1):
+                        if 'smoothness' in self.scores[i+1].keys():
+                            self.scores[i+1].pop('smoothness', None)
                      #Search which rotamers are inside the search radius
                     residues = set()
                     atoms = [a for a in surrounding_atoms(self.ligand_mol, self.protein_mol, self.radius_rotamers)]
@@ -678,16 +704,28 @@ class Pathway(GeneProvider):
                     self.allele['normal_modes'][i] = random.randint(0,
                                     self.parent.genes[self.nm_gene].n_samples)
                     self.scores[i] = {}
+                    #For smoothness score (dependent on the previous frame)
+                    if i < (len(self.allele['positions']) - 1):
+                        if 'smoothness' in self.scores[i+1].keys():
+                            self.scores[i+1].pop('smoothness', None)
                     self.act_rotamers.append(i)
                 elif operation == 'protein':
                     self.allele['mutate_protein'] = self.allele['mutate_protein'] + 1 #For register if mutate is being useful
                     self.allele['protein'][i] = random.randint(0, len(self.protein_g.catalog)-1)
                     self.scores[i] = {}
+                    #For smoothness score (dependent on the previous frame)
+                    if i < (len(self.allele['positions']) - 1):
+                        if 'smoothness' in self.scores[i+1].keys():
+                            self.scores[i+1].pop('smoothness', None)
                     self.act_rotamers.append(i)
                 elif operation == 'ligand':
                     self.allele['mutate_ligand'] = self.allele['mutate_ligand'] + 1 #For register if mutate is being useful
                     self.allele['ligand'][i] = random.randint(0, len(self.ligand_g.catalog)-1)
                     self.scores[i] = {}
+                    #For smoothness score (dependent on the previous frame)
+                    if i < (len(self.allele['positions']) - 1):
+                        if 'smoothness' in self.scores[i+1].keys():
+                            self.scores[i+1].pop('smoothness', None)
                     self.act_rotamers.append(i)
 
     def actualize_rotamers(self, i):
@@ -987,3 +1025,23 @@ def surrounding_atoms(ligand, protein, radius_rotamers):
                                             [ligand, protein]))
     atom_list = [at for at in z.atoms() if at not in ligand.atoms]
     return atom_list
+
+
+
+
+def _distance_atom_sets(set1, set2):
+    distance = 0.0
+    for atom_serial in set2.keys():
+        ax, ay, az = set1[atom_serial]
+        bx, by, bz = set2[atom_serial]
+        distance += sqrt((bx-ax)*(bx-ax)+(by-ay)*(by-ay)+(bz-az)*(bz-az))
+    return distance / len(set2.keys())
+
+def _get_mol_coords(chimera_mol, name=None):
+    coords = {}
+    for atom in chimera_mol.atoms:
+        if name and atom.name == name:
+            coords[atom.serialNumber] = list(atom.xformCoord())
+        elif not name:
+            coords[atom.serialNumber] = list(atom.xformCoord())
+    return coords
