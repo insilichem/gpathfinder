@@ -58,12 +58,6 @@ Features
 **Flexibility for the ligand**
 
 - Dihedral angles
-
-.. image:: docs/data/new.jpeg
-   :align: left
-   :height: 30px
-   :alt: NEW!
-
 - Pool of conformations provided by the user (e.g. through conformer generation)
 
 **Different levels of flexibility for the receptor**
@@ -71,12 +65,6 @@ Features
 - Side-chain flexibility using rotamer libraries
 - Global movements by Normal Mode Analysis sampling
 - Global movements extracted from a PCA analysis over a MD trajectory (.dcd file)
-
-.. image:: docs/data/new.jpeg
-   :align: left
-   :height: 30px
-   :alt: NEW!
-
 - Pool of conformations provided by the user (e.g. snapshots from a MD trajectory)
 
 **Different options for evalute and optimize the solutions**
@@ -104,11 +92,6 @@ GPathFinder and GaudiMM are licensed under the Apache License, Version 2.0. Chec
 
 History of versions
 -------------------
-
-.. image:: docs/data/new.jpeg
-   :align: left
-   :height: 30px
-   :alt: NEW!
 
 - **v1.3.0:** 10th November 2020
 The user can provide a set of conformations for the ligand or the protein or both. This allows, for example, to use a set of snapshots from a MD trajectory to define the conformational space that GPathFinder will explore.
